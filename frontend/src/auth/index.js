@@ -7,8 +7,8 @@ const getToken = () => localStorage.getItem("access_token");
 
 // Tạo một instance của Axios
 const axiosInstance = axios.create({
-  // baseURL: process.env.NODE_ENV === "development" ? "http://localhost:5000" : "/",
-  baseURL: "/", // Đặt URL gốc của API
+  baseURL: process.env.NODE_ENV === "development" ? "http://localhost:5000" : "/",
+  // baseURL: "/", // Đặt URL gốc của API
   // baseURL: "http://localhost:5000", // Đặt URL gốc của API
   headers: {
     "Content-Type": "application/json", // Đặt header mặc định

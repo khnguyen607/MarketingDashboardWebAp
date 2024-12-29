@@ -53,6 +53,7 @@ export default [
     action: "read",
     resource: "ACL",
   },
+
   {
     header: "Khai thác báo cáo",
     action: "read",
@@ -125,35 +126,37 @@ export default [
     action: "read",
     resource: "ACL",
   },
+
   {
-    header: "Thưởng phạt",
+    header: "Đánh giá thi đua",
     action: "read",
     resource: "ACL",
   },
   {
     title: "Thưởng phạt",
-    icon: "Edit2Icon",
-    route: "reports-entry-bonus",
-    action: "read",
-    resource: "ACL",
-  },
-  {
-    title: "Tra cứu thưởng phạt",
-    icon: "SearchIcon",
-    route: "reports-query-bonus",
-    action: "read",
-    resource: "ACL",
-  },
-  {
-    title: "Tổng hợp thưởng phạt",
-    route: "reports-query-bonus-month",
-    action: "read",
-    resource: "ACL",
-  },
-  {
-    header: "Đánh giá thi đua",
-    action: "read",
-    resource: "ACL",
+    icon: "BarChart2Icon",
+    children: [
+      {
+        title: "Thưởng phạt",
+        icon: "Edit2Icon",
+        route: "reports-entry-bonus",
+        action: "read",
+        resource: "ACL",
+      },
+      {
+        title: "Tra cứu thưởng phạt",
+        icon: "SearchIcon",
+        route: "reports-query-bonus",
+        action: "read",
+        resource: "ACL",
+      },
+      {
+        title: "Tổng hợp thưởng phạt",
+        route: "reports-query-bonus-month",
+        action: "read",
+        resource: "ACL",
+      },
+    ],
   },
   {
     title: "Xếp hạng-Thi đua",
@@ -184,18 +187,5 @@ export default [
         resource: "ACL",
       },
     ],
-  },
-
-  {
-    header: "Trung tâm hỗ trợ",
-    action: "read",
-    resource: "ACL",
-  },
-  {
-    title: "Hỗ trợ",
-    href: "https://forms.gle/NKjFFcon6x3j8D6L7",
-    icon: "LifeBuoyIcon",
-    action: "read",
-    resource: "ACL",
   },
 ];
