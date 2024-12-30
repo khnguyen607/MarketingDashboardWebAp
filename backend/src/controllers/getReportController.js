@@ -28,9 +28,9 @@ const marketingTeam = async (req, res) => {
   }
 };
 
-const userPerformance = async (req, res) => {
+const marketingMonth = async (req, res) => {
   try {
-    const sql = "SELECT * FROM view_user_performance_reports";
+    const sql = "SELECT * FROM view_marketing_month_reports";
     const [datas] = await sequelize.query(sql);
 
     res.status(200).json({
@@ -42,9 +42,9 @@ const userPerformance = async (req, res) => {
   }
 };
 
-const teamPerformance = async (req, res) => {
+const marketingTeamMonth = async (req, res) => {
   try {
-    const sql = "SELECT * FROM view_team_performance_reports";
+    const sql = "SELECT * FROM view_marketing_team_month_reports";
     const [datas] = await sequelize.query(sql);
 
     res.status(200).json({
@@ -211,8 +211,8 @@ const saleMonth = async (req, res) => {
 module.exports = {
   marketing,
   marketingTeam,
-  userPerformance,
-  teamPerformance,
+  marketingMonth,
+  marketingTeamMonth,
   bonus,
   bonusMonth,
   userReview,

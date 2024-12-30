@@ -34,13 +34,13 @@
             <span v-else-if="props.column.label == 'Doanh số thực tế'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.incomeReal
+                totalColumns.incomeNet
               }}</span>
             </span>
             <span v-else-if="props.column.label == 'Doanh số trung bình/ngày'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.incomeAverage
+                totalColumns.incomeAvg
               }}</span>
             </span>
             <span
@@ -48,7 +48,7 @@
             >
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.incomeAverageToUser
+                totalColumns.incomeToUserAvg
               }}</span>
             </span>
             <span v-else-if="props.column.label == 'Tỉ lệ hoàn thành'">
@@ -60,7 +60,7 @@
             <span v-else-if="props.column.label == 'Chi phí ads'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.adsReal
+                totalColumns.ads
               }}</span>
             </span>
             <span v-else-if="props.column.label == 'Tỉ lệ ads'">
@@ -71,12 +71,12 @@
             </span>
             <span v-else-if="props.column.label == 'Mã win kế hoạch'">
               <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{ totalColumns.win }}</span>
+              <span class="badge bg-success fs-6">{{ totalColumns.winTarget }}</span>
             </span>
             <span v-else-if="props.column.label == 'Mã win thực tế'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.winReal
+                totalColumns.win
               }}</span>
             </span>
             <span
@@ -90,7 +90,7 @@
             <span v-else-if="props.column.label == 'Dự báo tỉ lệ hoàn thành'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.completionProjection
+                totalColumns.completionRateProjection
               }}</span>
             </span>
           </template>
@@ -98,26 +98,26 @@
             <span v-if="props.column.field === 'adsRate'">
               {{ props.row.adsRate + "%" }}
             </span>
-            <span v-else-if="props.column.field === 'incomeReal'">
-              {{ normalize(props.row.incomeReal) }}
+            <span v-else-if="props.column.field === 'incomeNet'">
+              {{ normalize(props.row.incomeNet) }}
             </span>
-            <span v-else-if="props.column.field === 'incomeAverageToUser'">
-              {{ normalize(props.row.incomeAverageToUser) }}
+            <span v-else-if="props.column.field === 'incomeToUserAvg'">
+              {{ normalize(props.row.incomeToUserAvg) }}
             </span>
             <span v-else-if="props.column.field === 'completionRate'">
               {{ props.row.completionRate + "%" }}
             </span>
-            <span v-else-if="props.column.field === 'completionProjection'">
-              {{ props.row.completionProjection + "%" }}
+            <span v-else-if="props.column.field === 'completionRateProjection'">
+              {{ props.row.completionRateProjection + "%" }}
             </span>
-            <span v-else-if="props.column.field === 'adsReal'">
-              {{ normalize(props.row.adsReal) }}
+            <span v-else-if="props.column.field === 'ads'">
+              {{ normalize(props.row.ads) }}
             </span>
             <span v-else-if="props.column.field === 'income'">
               {{ normalize(props.row.income) }}
             </span>
-            <span v-else-if="props.column.field === 'incomeAverage'">
-              {{ normalize(props.row.incomeAverage) }}
+            <span v-else-if="props.column.field === 'incomeAvg'">
+              {{ normalize(props.row.incomeAvg) }}
             </span>
             <span v-else-if="props.column.field === 'incomeProjection'">
               {{ normalize(props.row.incomeProjection) }}
@@ -127,9 +127,9 @@
                 {{ props.row.progressReview }}
               </b-badge>
             </span>
-            <span v-else-if="props.column.field === 'feeReview'">
-              <b-badge :variant="statusVariant(props.row.feeReview)">
-                {{ props.row.feeReview }}
+            <span v-else-if="props.column.field === 'adsRateReview'">
+              <b-badge :variant="statusVariant(props.row.adsRateReview)">
+                {{ props.row.adsRateReview }}
               </b-badge>
             </span>
           </template>
@@ -218,16 +218,16 @@ export default {
     return {
       totalColumns: {
         income: 0,
-        incomeReal: 0,
-        incomeAverage: 0,
-        incomeAverageToUser: 0,
+        incomeNet: 0,
+        incomeAvg: 0,
+        incomeToUserAvg: 0,
         adsRate: 0,
         completionRate: 0,
-        adsReal: 0,
+        ads: 0,
+        winTarget: 0,
         win: 0,
-        winReal: 0,
         incomeProjection: 0,
-        completionProjection: 0,
+        completionRateProjection: 0,
       },
       exportExcelData: {
         columns: [],
@@ -272,7 +272,7 @@ export default {
         },
         {
           label: "Doanh số thực tế",
-          field: "incomeReal",
+          field: "incomeNet",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -281,7 +281,7 @@ export default {
         },
         {
           label: "Doanh số trung bình/ngày",
-          field: "incomeAverage",
+          field: "incomeAvg",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -289,7 +289,7 @@ export default {
         },
         {
           label: "Doanh số trung bình/nhân viên",
-          field: "incomeAverageToUser",
+          field: "incomeToUserAvg",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -305,7 +305,7 @@ export default {
         },
         {
           label: "Chi phí ads",
-          field: "adsReal",
+          field: "ads",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -321,7 +321,7 @@ export default {
         },
         {
           label: "Mã win kế hoạch",
-          field: "win",
+          field: "winTarget",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -329,7 +329,7 @@ export default {
         },
         {
           label: "Mã win thực tế",
-          field: "winReal",
+          field: "win",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -345,7 +345,7 @@ export default {
         },
         {
           label: "Dự báo tỉ lệ hoàn thành",
-          field: "completionProjection",
+          field: "completionRateProjection",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -361,7 +361,7 @@ export default {
         },
         {
           label: "Đánh giá chi phí",
-          field: "feeReview",
+          field: "adsRateReview",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -408,7 +408,7 @@ export default {
         width: 30,
       };
     });
-    await this.$callApi.get("/api/getReports/teamPerformance").then((res) => {
+    await this.$callApi.get("/api/getReports/marketingTeamMonth").then((res) => {
       const data = res.data.data.filter((item) => {
         switch (this.userData.role) {
           case "ADMIN":
@@ -429,58 +429,58 @@ export default {
   methods: {
     async getTotal() {
       this.totalColumns.income = 0;
-      this.totalColumns.incomeReal = 0;
-      this.totalColumns.incomeAverage = 0;
-      this.totalColumns.incomeAverageToUser = 0;
+      this.totalColumns.incomeNet = 0;
+      this.totalColumns.incomeAvg = 0;
+      this.totalColumns.incomeToUserAvg = 0;
       this.totalColumns.adsRate = 0;
       this.totalColumns.completionRate = 0;
-      this.totalColumns.adsReal = 0;
+      this.totalColumns.ads = 0;
+      this.totalColumns.winTarget = 0;
       this.totalColumns.win = 0;
-      this.totalColumns.winReal = 0;
       this.totalColumns.incomeProjection = 0;
-      this.totalColumns.completionProjection = 0;
+      this.totalColumns.completionRateProjection = 0;
       this.filteredRows.forEach((item) => {
         this.totalColumns.income += Number(item.income);
-        this.totalColumns.incomeReal += Number(item.incomeReal);
-        this.totalColumns.incomeAverage += Number(item.incomeAverage);
-        this.totalColumns.incomeAverageToUser += Number(
-          item.incomeAverageToUser
+        this.totalColumns.incomeNet += Number(item.incomeNet);
+        this.totalColumns.incomeAvg += Number(item.incomeAvg);
+        this.totalColumns.incomeToUserAvg += Number(
+          item.incomeToUserAvg
         );
         this.totalColumns.completionRate += Number(item.completionRate);
-        this.totalColumns.adsReal += Number(item.adsReal);
+        this.totalColumns.ads += Number(item.ads);
+        this.totalColumns.winTarget += Number(item.winTarget);
         this.totalColumns.win += Number(item.win);
-        this.totalColumns.winReal += Number(item.winReal);
         this.totalColumns.incomeProjection += Number(item.incomeProjection);
-        this.totalColumns.completionProjection += Number(
-          item.completionProjection
+        this.totalColumns.completionRateProjection += Number(
+          item.completionRateProjection
         );
       });
       this.totalColumns.adsRate =
         Math.round(
-          (this.totalColumns.adsReal / this.totalColumns.incomeReal) * 100
+          (this.totalColumns.ads / this.totalColumns.incomeNet) * 100
         ) + "%";
       this.totalColumns.completionRate =
         Math.round(
-          (this.totalColumns.incomeReal / this.totalColumns.income) * 100
+          (this.totalColumns.incomeNet / this.totalColumns.income) * 100
         ) + "%";
-      this.totalColumns.completionProjection =
+      this.totalColumns.completionRateProjection =
         Math.round(
           (this.totalColumns.incomeProjection / this.totalColumns.income) * 100
         ) + "%";
       this.totalColumns.income = this.normalize(this.totalColumns.income);
-      this.totalColumns.incomeReal = this.normalize(
-        this.totalColumns.incomeReal
+      this.totalColumns.incomeNet = this.normalize(
+        this.totalColumns.incomeNet
       );
-      this.totalColumns.incomeAverageToUser = this.normalize(this.totalColumns.incomeAverageToUser);
-      this.totalColumns.adsReal = this.normalize(this.totalColumns.adsReal);
+      this.totalColumns.incomeToUserAvg = this.normalize(this.totalColumns.incomeToUserAvg);
+      this.totalColumns.ads = this.normalize(this.totalColumns.ads);
       this.totalColumns.incomeProjection = this.normalize(
         this.totalColumns.incomeProjection
       );
-      this.totalColumns.incomeAverage = this.normalize(
-        this.totalColumns.incomeAverage
+      this.totalColumns.incomeAvg = this.normalize(
+        this.totalColumns.incomeAvg
       );
-      this.totalColumns.incomeAverage = this.normalize(
-        this.totalColumns.incomeAverageToUser
+      this.totalColumns.incomeAvg = this.normalize(
+        this.totalColumns.incomeToUserAvg
       );
     },
     exportToExcel() {

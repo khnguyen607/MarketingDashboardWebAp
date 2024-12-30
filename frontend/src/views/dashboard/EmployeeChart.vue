@@ -21,7 +21,7 @@
         </b-media>
         <div class="d-flex align-items-center">
           <small class="text-muted mr-75"
-            >{{ normalize(employee.incomeReal) }} ₫</small
+            >{{ normalize(employee.incomeNet) }} ₫</small
           >
         </div>
       </div>

@@ -1,4 +1,4 @@
-const Modal = require("../models/month_reports");
+const Modal = require("../models/positions");
 
 // Lấy danh sách tất cả
 const getAlls = async (req, res) => {
@@ -35,16 +35,11 @@ const getById = async (req, res) => {
 // Tạo mới
 const createModel = async (req, res) => {
   try {
-    const { userId, tern, income, ads, teamId, branchId, win } = req.body;
+    const { name, description } = req.body;
 
     const data = await Modal.create({
-      userId,
-      tern,
-      income,
-      ads,
-      teamId,
-      branchId,
-      win,
+      name,
+      description,
     });
 
     res.status(201).json({
@@ -52,11 +47,7 @@ const createModel = async (req, res) => {
       data: data,
     });
   } catch (error) {
-    if (error.name === "SequelizeUniqueConstraintError") {
-      res.status(409).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: error.message });
-    }
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -64,7 +55,7 @@ const createModel = async (req, res) => {
 const updateModel = async (req, res) => {
   try {
     const { id } = req.params;
-    const { userId, tern, income, ads, teamId, branchId, win } = req.body;
+    const { name, description } = req.body;
 
     const data = await Modal.findByPk(id);
     if (!data) {
@@ -73,13 +64,8 @@ const updateModel = async (req, res) => {
 
     // Cập nhật dữ liệu
     await data.update({
-      userId,
-      tern,
-      income,
-      ads,
-      teamId,
-      branchId,
-      win,
+      name,
+      description,
     });
 
     res.status(200).json({
@@ -87,11 +73,7 @@ const updateModel = async (req, res) => {
       data: data,
     });
   } catch (error) {
-    if (error.name === "SequelizeUniqueConstraintError") {
-      res.status(409).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: error.message });
-    }
+    res.status(500).json({ error: error.message });
   }
 };
 

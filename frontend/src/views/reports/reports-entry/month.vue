@@ -184,11 +184,11 @@ export default {
       try {
         if (this.edit) {
           await this.$callApi.put(
-            "/api/monthReports/" + this.edit,
+            "/api/marketingTargetReports/" + this.edit,
             this.dataForm
           );
         } else {
-          await this.$callApi.post("/api/monthReports", this.dataForm);
+          await this.$callApi.post("/api/marketingTargetReports", this.dataForm);
           this.dataForm = {
             userId: JSON.parse(localStorage.getItem("userData")).id,
             tern: null,
@@ -238,7 +238,7 @@ export default {
       const id = this.$route.params.id;
       if (id) {
         this.edit = id;
-        await this.$callApi.get("/api/monthReports/" + id).then((res) => {
+        await this.$callApi.get("/api/marketingTargetReports/" + id).then((res) => {
           const data = res.data.data;
           const date = new Date(data.tern);
           date.setMonth(date.getMonth() + 1);

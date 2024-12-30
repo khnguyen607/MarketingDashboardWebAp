@@ -3,8 +3,8 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const {
   marketing,
   marketingTeam,
-  userPerformance,
-  teamPerformance,
+  marketingMonth,
+  marketingTeamMonth,
   bonus,
   bonusMonth,
   userReview,
@@ -22,8 +22,8 @@ const router = express.Router();
 // Định nghĩa các route
 router.get("/marketing", authMiddleware, marketing);
 router.get("/marketingTeam", authMiddleware, marketingTeam);
-router.get("/userPerformance", authMiddleware, userPerformance);
-router.get("/teamPerformance", authMiddleware, teamPerformance);
+router.get("/marketingMonth", authMiddleware, marketingMonth);
+router.get("/marketingTeamMonth", authMiddleware, marketingTeamMonth);
 router.get("/bonus", authMiddleware, bonus);
 router.get("/bonusMonth", authMiddleware, bonusMonth);
 router.get("/userReview", authMiddleware, userReview);

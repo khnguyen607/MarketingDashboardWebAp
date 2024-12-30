@@ -8,6 +8,7 @@
       width="100%"
       :options="options"
       height="300"
+      :series="[]"
     />
   </b-card>
 </template>

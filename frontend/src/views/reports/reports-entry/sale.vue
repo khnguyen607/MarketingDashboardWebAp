@@ -210,18 +210,7 @@ export default {
         orderOld: null,
       },
       options: {
-        position: [
-          { text: "MKT Học việc", value: "MKT Học việc" },
-          { text: "MKT Thử việc", value: "MKT Thử việc" },
-          { text: "Marketing", value: "Marketing" },
-          { text: "Sale", value: "Sale" },
-          { text: "CTV", value: "CTV" },
-          { text: "CSKH", value: "CSKH" },
-          { text: "Leader tập sự", value: "Leader tập sự" },
-          { text: "Leader MKT", value: "Leader MKT" },
-          { text: "Leader Sale", value: "Leader Sale" },
-          { text: "Giám đốc", value: "Giám đốc" },
-        ],
+        position: [],
         user: [],
         team: [],
         branch: [],
@@ -244,6 +233,12 @@ export default {
     this.$callApi.get("/api/branches").then((res) => {
       this.options.branch = res.data.data.map((item) => {
         return { value: item.id, text: item.name };
+      });
+    });
+
+    this.$callApi.get("/api/positions").then((res) => {
+      this.options.position = res.data.data.map((item) => {
+        return { value: item.name, text: item.name };
       });
     });
     this.getData();

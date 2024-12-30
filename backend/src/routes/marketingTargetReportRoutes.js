@@ -5,7 +5,7 @@ const {
   createModel,
   updateModel,
   deleteModel,
-} = require("../controllers/monthReportController");
+} = require("../controllers/marketingTargetController");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = express.Router();

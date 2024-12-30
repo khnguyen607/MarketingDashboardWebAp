@@ -94,8 +94,6 @@ export default {
   },
   methods: {
     updateChartData(labels, series) {
-      console.log(labels);
-      console.log(series);
       this.$refs.chart.updateOptions({
         labels: labels,
         series: series,

@@ -145,20 +145,20 @@ export default [
     },
   },
   {
-    path: "/reports/query/userPerformance",
+    path: "/reports/query/marketingMonth",
     name: "reports-query-user-performance",
     component: () =>
-      import("@/views/reports/reports-query/userPerformance.vue"),
+      import("@/views/reports/reports-query/marketingMonth.vue"),
     meta: {
       resource: "ACL",
       action: "read",
     },
   },
   {
-    path: "/reports/query/teamPerformance",
+    path: "/reports/query/marketingTeamMonth",
     name: "reports-query-team-performance",
     component: () =>
-      import("@/views/reports/reports-query/teamPerformance.vue"),
+      import("@/views/reports/reports-query/marketingTeamMonth.vue"),
     meta: {
       resource: "ACL",
       action: "read",

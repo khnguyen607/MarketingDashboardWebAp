@@ -205,6 +205,7 @@ import {
   BButton,
   BFormInput,
   BFormSelect,
+  BFormGroup,
 } from "bootstrap-vue";
 
 import { getUserData } from "@/auth/utils";
@@ -235,6 +236,7 @@ export default {
     BasicCard,
     BFormInput,
     BFormSelect,
+    BFormGroup,
   },
   data() {
     return {
@@ -410,16 +412,18 @@ export default {
         });
     },
     async getChartData() {
-      await this.$callApi.get("/api/getReports/teamPerformance").then((res) => {
-        const data = res.data.data;
-        this.rawData = data.filter(
-          (item) =>
-            item.tern ===
-            `${this.selectedDate.split("-")[1]}/${
-              this.selectedDate.split("-")[0]
-            }`
-        );
-      });
+      await this.$callApi
+        .get("/api/getReports/marketingTeamMonth")
+        .then((res) => {
+          const data = res.data.data;
+          this.rawData = data.filter(
+            (item) =>
+              item.tern ===
+              `${this.selectedDate.split("-")[1]}/${
+                this.selectedDate.split("-")[0]
+              }`
+          );
+        });
       await this.$callApi
         .post("/api/getReports/getIncomeDaily", {
           tern: this.selectedDate,
@@ -431,10 +435,10 @@ export default {
       await this.updateChartData();
     },
     async getEmployeeData() {
-      await this.$callApi.get("/api/getReports/userPerformance").then((res) => {
+      await this.$callApi.get("/api/getReports/marketingMonth").then((res) => {
         const data = res.data.data;
         this.rawUserData = data;
-        // Lọc ra dữ liệu chỉ thuộc kỳ "11/2024"
+        // Lọc ra dữ liệu chỉ thuộc kỳ
         const filteredData = data.filter(
           (item) =>
             item.tern ===
@@ -444,11 +448,11 @@ export default {
         );
         // Sắp xếp theo income giảm dần
         const sortedByIncomeDesc = [...filteredData].sort(
-          (a, b) => b.incomeReal - a.incomeReal
+          (a, b) => b.incomeNet - a.incomeNet
         );
         // Sắp xếp theo income tăng dần
         const sortedByIncomeAsc = [...filteredData].sort(
-          (a, b) => a.incomeReal - b.incomeReal
+          (a, b) => a.incomeNet - b.incomeNet
         );
         // Lấy top 5 nhân viên có income cao nhất
         const topHighestIncome = sortedByIncomeDesc.slice(0, 5);
@@ -479,24 +483,24 @@ export default {
 
       // dump data
       this.rawData.forEach((item) => {
-        this.charts.totalIncomeByTeam.data.series.push(Number(item.incomeReal));
+        this.charts.totalIncomeByTeam.data.series.push(Number(item.incomeNet));
         this.charts.totalIncomeByTeam.data.labels.push(item.teamName);
 
         this.charts.totalWinByTeamColumn.data.series[0].data.push(
-          Number(item.incomeReal)
+          Number(item.incomeNet)
         );
         this.charts.totalWinByTeamColumn.data.categories.push(item.teamName);
 
-        this.charts.totalWinByTeam.data.series[0].data.push(item.winReal);
+        this.charts.totalWinByTeam.data.series[0].data.push(item.win);
         this.charts.totalWinByTeam.data.categories.push(item.teamName);
 
-        this.charts.totalAdsByTeam.data.series[0].data.push(item.adsReal);
+        this.charts.totalAdsByTeam.data.series[0].data.push(item.ads);
         this.charts.totalAdsByTeam.data.categories.push(item.teamName);
 
         this.charts.totalAdsRateByTeam.data.series[0].data.push(item.adsRate);
         this.charts.totalAdsRateByTeam.data.categories.push(item.teamName);
 
-        this.charts.incomeCompletion.data.series[0].data.push(item.incomeReal);
+        this.charts.incomeCompletion.data.series[0].data.push(item.incomeNet);
         this.charts.incomeCompletion.data.series[1].data.push(item.income);
         this.charts.incomeCompletion.data.categories.push(item.teamName);
 
@@ -504,8 +508,6 @@ export default {
           item.completionRate
         );
         this.charts.incomeCompletionRate.data.categories.push(item.teamName);
-        
-       
       });
       // refreshData
       this.charts.totalIncomeByTeam.key += 1;
@@ -533,41 +535,10 @@ export default {
       this.charts.incomeUserRank.data.series[0].data = [];
       this.charts.incomeUserRank.data.categories = [];
       this.rawUserData.forEach((item) => {
-        this.charts.incomeUserRank.data.series[0].data.push(
-          item.incomeReal
-        );
+        this.charts.incomeUserRank.data.series[0].data.push(item.incomeNet);
         this.charts.incomeUserRank.data.categories.push(item.userName);
-      })
+      });
       this.charts.incomeUserRank.key += 1;
-
-      // // CHART YEAR
-      // // clear data
-      // this.charts.totalIncomeByMonth.data.series[0].data = [];
-      // this.charts.totalIncomeByMonth.data.categories = [];
-      // const totalIncomeByMonth = await this.$callApi.get(
-      //   "/api/getReports/totalIncomeByMonth"
-      // );
-      // this.charts.totalIncomeToAdsByMonth.data.series[0].data = [];
-      // this.charts.totalIncomeToAdsByMonth.data.series[1].data = [];
-      // this.charts.totalIncomeToAdsByMonth.data.categories = [];
-      // // dump data
-      // this.rawData.forEach((item) => {
-      //   this.charts.totalIncomeToAdsByMonth.data.series[0].data.push(
-      //     item.incomeReal
-      //   );
-      //   this.charts.totalIncomeToAdsByMonth.data.categories.push(item.teamName);
-
-      //   this.charts.totalIncomeToAdsByMonth.data.series[0].data.push(
-      //     item.incomeReal
-      //   );
-      //   this.charts.totalIncomeToAdsByMonth.data.series[1].data.push(
-      //     item.income
-      //   );
-      //   this.charts.totalIncomeToAdsByMonth.data.categories.push(item.teamName);
-      // });
-      // // refreshData
-      // this.charts.totalIncomeByMonth.key += 1;
-      // this.charts.totalIncomeToAdsByMonth.key += 1;
     },
     normalize(data) {
       return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");

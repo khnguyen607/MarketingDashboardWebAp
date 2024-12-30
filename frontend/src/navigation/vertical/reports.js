@@ -100,17 +100,29 @@ export default [
     icon: "SearchIcon",
     children: [
       {
-        title: "Mục tiêu tháng",
-        route: "reports-query-sale-month",
-        action: "read",
-        resource: "ACL",
-      },
-      {
-        title: "Chi tiết ngày",
+        title: "Nhân viên chi tiết",
         route: "reports-query-sale-detail",
         action: "read",
         resource: "ACL",
       },
+      {
+        title: "Hiệu suất nhân viên",
+        route: "reports-query-sale-month",
+        action: "read",
+        resource: "ACL",
+      },
+      // {
+      //   title: "Hiệu suất team",
+      //   route: "reports-query-sale-month",
+      //   action: "read",
+      //   resource: "ACL",
+      // },
+      // {
+      //   title: "Team chi tiết",
+      //   route: "reports-query-sale-detail",
+      //   action: "read",
+      //   resource: "ACL",
+      // },
       {
         title: "Tổng hợp tháng",
         route: "reports-query-sale",

@@ -44,8 +44,8 @@ import {
   BDropdownItem,
 } from "bootstrap-vue";
 import Marketing from "./marketing.vue";
-import UserPerformance from "./userPerformance.vue";
-import TeamPerformance from "./teamPerformance.vue";
+import UserPerformance from "./marketingMonth.vue";
+import TeamPerformance from "./marketingTeamMonth.vue";
 import IncomeHistory from "./incomeHistory.vue";
 import UserReview from "./userReview.vue";
 import UserPromotion from "./userPromotion.vue";

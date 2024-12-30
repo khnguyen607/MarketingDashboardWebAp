@@ -8,6 +8,7 @@
       width="100%"
       :options="chartOptions"
       height="230"
+      :series="[]"
     />
   </b-card>
 </template>

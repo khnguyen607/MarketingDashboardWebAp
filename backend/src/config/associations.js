@@ -4,7 +4,7 @@ const Branch = require("../models/branches");
 const BonusReport = require("../models/bonus_reports");
 const IncomeReport = require("../models/income_reports");
 const MarketingReport = require("../models/marketing_reports");
-const MonthReport = require("../models/month_reports");
+const MarketingTarget = require("../models/marketing_target_reports");
 const SaleReport = require("../models/sale_reports");
 const SaleTargetReport = require("../models/sale_target_reports");
 const PageReport = require("../models/page_reports");
@@ -94,7 +94,7 @@ module.exports = {
   BonusReport,
   IncomeReport,
   MarketingReport,
-  MonthReport,
+  MarketingTarget,
   SaleReport,
   SaleTargetReport,
   PageReport,

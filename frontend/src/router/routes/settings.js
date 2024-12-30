@@ -19,4 +19,9 @@ export default [
     name: "settings-departments",
     component: () => import("@/views/settings/departments/department-list.vue"),
   },
+  {
+    path: "/settings/positions",
+    name: "settings-positions",
+    component: () => import("@/views/settings/positions/position-list.vue"),
+  },
 ];

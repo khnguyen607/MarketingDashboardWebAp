@@ -17,4 +17,9 @@ export default [
     route: "settings-branches",
     icon: "MapPinIcon",
   },
+  {
+    title: "Danh sách vị trí",
+    route: "settings-positions",
+    icon: "UserCheckIcon",
+  },
 ];
