@@ -13,7 +13,6 @@ const marketing = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 const marketingTeam = async (req, res) => {
   try {
     const sql = "SELECT * FROM view_marketing_team_reports";
@@ -27,7 +26,6 @@ const marketingTeam = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 const marketingMonth = async (req, res) => {
   try {
     const sql = "SELECT * FROM view_marketing_month_reports";
@@ -41,10 +39,36 @@ const marketingMonth = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 const marketingTeamMonth = async (req, res) => {
   try {
     const sql = "SELECT * FROM view_marketing_team_month_reports";
+    const [datas] = await sequelize.query(sql);
+
+    res.status(200).json({
+      message: "Retrieved successfully",
+      data: datas, // Kết quả của truy vấn
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const sale = async (req, res) => {
+  try {
+    const sql = "SELECT * FROM view_sale_reports";
+    const [datas] = await sequelize.query(sql);
+
+    res.status(200).json({
+      message: "Retrieved successfully",
+      data: datas, // Kết quả của truy vấn
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+const saleMonth = async (req, res) => {
+  try {
+    const sql = "SELECT * FROM view_sale_month_reports";
     const [datas] = await sequelize.query(sql);
 
     res.status(200).json({
@@ -69,7 +93,6 @@ const bonus = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 const bonusMonth = async (req, res) => {
   try {
     const sql = "SELECT * FROM view_bonus_month_reports";
@@ -97,6 +120,19 @@ const userReview = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+const userEliteClub = async (req, res) => {
+  try {
+    const sql = "SELECT * FROM view_user_elite_club";
+    const [datas] = await sequelize.query(sql);
+
+    res.status(200).json({
+      message: "Retrieved successfully",
+      data: datas, // Kết quả của truy vấn
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 const getDashboard = async (req, res) => {
   try {
@@ -112,7 +148,6 @@ const getDashboard = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 const getIncomeDaily = async (req, res) => {
   try {
     // tern: 2024-11
@@ -128,7 +163,6 @@ const getIncomeDaily = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 const getIncomeYear = async (req, res) => {
   try {
     try {
@@ -146,7 +180,6 @@ const getIncomeYear = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 const getUserPromotion = async (req, res) => {
   try {
     const { dateFrom, dateTo } = req.body;
@@ -162,7 +195,6 @@ const getUserPromotion = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 const getSaleMonth = async (req, res) => {
   try {
     const { dateFrom, dateTo } = req.body;
@@ -179,48 +211,25 @@ const getSaleMonth = async (req, res) => {
   }
 };
 
-const userEliteClub = async (req, res) => {
-  try {
-    const sql = "SELECT * FROM view_user_elite_club";
-    const [datas] = await sequelize.query(sql);
-
-    res.status(200).json({
-      message: "Retrieved successfully",
-      data: datas, // Kết quả của truy vấn
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-const saleMonth = async (req, res) => {
-  try {
-    const sql = "SELECT * FROM view_sale_month_reports";
-    const [datas] = await sequelize.query(sql);
-
-    res.status(200).json({
-      message: "Retrieved successfully",
-      data: datas, // Kết quả của truy vấn
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
 // Xuất các hàm controller
 module.exports = {
   marketing,
   marketingTeam,
   marketingMonth,
   marketingTeamMonth,
+
+  sale,
+  saleMonth,
+
   bonus,
   bonusMonth,
+
   userReview,
+  userEliteClub,
+
   getDashboard,
   getIncomeDaily,
   getIncomeYear,
   getUserPromotion,
   getSaleMonth,
-  userEliteClub,
-  saleMonth,
 };

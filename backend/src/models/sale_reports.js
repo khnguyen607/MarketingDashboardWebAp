@@ -29,11 +29,11 @@ const SaleReports = sequelize.define(
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
-    newIncome: {
+    incomeNew: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    oldIncome: {
+    incomeOld: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

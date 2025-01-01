@@ -192,15 +192,6 @@ export default [
     },
   },
   {
-    path: "/reports/query/sale",
-    name: "reports-query-sale",
-    component: () => import("@/views/reports/reports-query/sale.vue"),
-    meta: {
-      resource: "ACL",
-      action: "read",
-    },
-  },
-  {
     path: "/reports/query/bonus",
     name: "reports-query-bonus",
     component: () => import("@/views/reports/reports-query/bonus.vue"),
@@ -219,9 +210,18 @@ export default [
     },
   },
   {
-    path: "/reports/query/saleDetail",
-    name: "reports-query-sale-detail",
-    component: () => import("@/views/reports/reports-query/saleDetail.vue"),
+    path: "/reports/query/sale",
+    name: "reports-query-sale",
+    component: () => import("@/views/reports/reports-query/sale.vue"),
+    meta: {
+      resource: "ACL",
+      action: "read",
+    },
+  },
+  {
+    path: "/reports/query/saleTeam",
+    name: "reports-query-sale-team",
+    component: () => import("@/views/reports/reports-query/saleTeam.vue"),
     meta: {
       resource: "ACL",
       action: "read",
@@ -231,6 +231,24 @@ export default [
     path: "/reports/query/saleMonth",
     name: "reports-query-sale-month",
     component: () => import("@/views/reports/reports-query/saleMonth.vue"),
+    meta: {
+      resource: "ACL",
+      action: "read",
+    },
+  },
+  {
+    path: "/reports/query/saleTeamMonth",
+    name: "reports-query-sale-team-month",
+    component: () => import("@/views/reports/reports-query/saleTeamMonth.vue"),
+    meta: {
+      resource: "ACL",
+      action: "read",
+    },
+  },
+  {
+    path: "/reports/query/saleReview",
+    name: "reports-query-sale-review",
+    component: () => import("@/views/reports/reports-query/saleReview.vue"),
     meta: {
       resource: "ACL",
       action: "read",

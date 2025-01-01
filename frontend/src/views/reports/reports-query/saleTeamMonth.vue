@@ -1,7 +1,7 @@
 <template>
   <b-card p-5>
     <b-card-header class="d-flex justify-content-between align-items-center">
-      <b-card-title>Báo cáo hiệu suất nhân viên</b-card-title>
+      <b-card-title>Chi tiết báo cáo sale</b-card-title>
       <div>
         <b-button variant="primary" class="btn-icon mx-2" @click="getTotal">
           <feather-icon icon="BarChartIcon" />
@@ -25,134 +25,163 @@
           }"
         >
           <template slot="table-column" slot-scope="props">
-            <span v-if="props.column.label == 'Doanh số mục tiêu'">
+            <span v-if="props.column.label == 'Doanh số sale'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.income
+                normalize(totalColumns.incomeNew)
               }}</span>
             </span>
-            <span v-else-if="props.column.label == 'Doanh số'">
+            <span v-else-if="props.column.label == 'Doanh số cskh'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.incomeReal
+                normalize(totalColumns.incomeOld)
               }}</span>
             </span>
-            <span v-else-if="props.column.label == 'Doanh số sau ship'">
+            <span v-else-if="props.column.label == 'Data sale'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.incomeNet
+                normalize(totalColumns.dataNew)
+              }}</span>
+            </span>
+            <span v-else-if="props.column.label == 'Data cskh'">
+              <span class="me-2">{{ props.column.label }}:</span>
+              <span class="badge bg-success fs-6">{{
+                normalize(totalColumns.dataOld)
+              }}</span>
+            </span>
+            <span v-else-if="props.column.label == 'Tổng data'">
+              <span class="me-2">{{ props.column.label }}:</span>
+              <span class="badge bg-success fs-6">{{
+                normalize(totalColumns.dataTotal)
+              }}</span>
+            </span>
+            <span v-else-if="props.column.label == 'Số đơn Sale'">
+              <span class="me-2">{{ props.column.label }}:</span>
+              <span class="badge bg-success fs-6">{{
+                normalize(totalColumns.orderNew)
+              }}</span>
+            </span>
+            <span v-else-if="props.column.label == 'Số đơn CSKH'">
+              <span class="me-2">{{ props.column.label }}:</span>
+              <span class="badge bg-success fs-6">{{
+                normalize(totalColumns.orderOld)
+              }}</span>
+            </span>
+            <span v-else-if="props.column.label == 'Tổng đơn'">
+              <span class="me-2">{{ props.column.label }}:</span>
+              <span class="badge bg-success fs-6">{{
+                normalize(totalColumns.orderTotal)
+              }}</span>
+            </span>
+            <span v-else-if="props.column.label == 'Tổng doanh số'">
+              <span class="me-2">{{ props.column.label }}:</span>
+              <span class="badge bg-success fs-6">{{
+                normalize(totalColumns.incomeTotal)
               }}</span>
             </span>
             <span v-else-if="props.column.label == 'Phí ship'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.shipCost
+                normalize(totalColumns.shipCost)
               }}</span>
             </span>
-            <span v-else-if="props.column.label == 'Số đơn hàng'">
+            <span v-else-if="props.column.label == 'Tổng doanh số sau ship'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.orderCount
+                normalize(totalColumns.incomeNetTotal)
               }}</span>
             </span>
-            <span v-else-if="props.column.label == 'Trung bình đơn'">
+            <span v-else-if="props.column.label == 'Trung bình đơn thực tế'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.incomeNetAvg
+                normalize(totalColumns.incomeNetAvg)
               }}</span>
             </span>
-            <span v-else-if="props.column.label == 'Doanh số trung bình'">
+            <span v-else-if="props.column.label == 'Tỉ lệ chốt'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                totalColumns.incomeAverage
-              }}</span>
-            </span>
-            <span v-else-if="props.column.label == 'Tỉ lệ hoàn thành'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.completionRate
-              }}</span>
-            </span>
-            <span v-else-if="props.column.label == 'Chi phí ads'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.adsReal
-              }}</span>
-            </span>
-            <span v-else-if="props.column.label == 'Tỉ lệ ads'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.adsRate
-              }}</span>
-            </span>
-            <span v-else-if="props.column.label == 'Mã win kế hoạch'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{ totalColumns.win }}</span>
-            </span>
-            <span v-else-if="props.column.label == 'Mã win thực tế'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.winReal
-              }}</span>
-            </span>
-            <span
-              v-else-if="props.column.label == 'Dự báo doanh số cuối tháng'"
-            >
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.incomeProjection
-              }}</span>
-            </span>
-            <span v-else-if="props.column.label == 'Dự báo tỉ lệ hoàn thành'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.completionProjection
+                totalColumns.conversionRate + "%"
               }}</span>
             </span>
           </template>
           <template slot="table-row" slot-scope="props">
-            <span v-if="props.column.field === 'adsRate'">
-              {{ props.row.adsRate + "%" }}
+            <span v-if="props.column.field === 'incomeOld'">
+              {{ normalize(props.row.incomeOld) }}
             </span>
-            <span v-else-if="props.column.field === 'incomeReal'">
-              {{ normalize(props.row.incomeReal) }}
+            <span v-else-if="props.column.field === 'incomeNew'">
+              {{ normalize(props.row.incomeNew) }}
             </span>
-            <span v-else-if="props.column.field === 'incomeNet'">
-              {{ normalize(props.row.incomeNet) }}
+            <span v-else-if="props.column.field === 'dataNew'">
+              {{ normalize(props.row.dataNew) }}
+            </span>
+            <span v-else-if="props.column.field === 'dataOld'">
+              {{ normalize(props.row.dataOld) }}
+            </span>
+            <span v-else-if="props.column.field === 'dataTotal'">
+              {{
+                normalize(Number(props.row.dataNew) + Number(props.row.dataOld))
+              }}
+            </span>
+            <span v-else-if="props.column.field === 'orderNew'">
+              {{ normalize(props.row.orderNew) }}
+            </span>
+            <span v-else-if="props.column.field === 'orderOld'">
+              {{ normalize(props.row.orderOld) }}
+            </span>
+            <span v-else-if="props.column.field === 'orderTotal'">
+              {{
+                normalize(
+                  Number(props.row.orderNew) + Number(props.row.orderOld)
+                )
+              }}
+            </span>
+            <span v-else-if="props.column.field === 'incomeTotal'">
+              {{
+                normalize(
+                  Number(props.row.incomeNew) + Number(props.row.incomeOld)
+                )
+              }}
             </span>
             <span v-else-if="props.column.field === 'shipCost'">
-              {{ normalize(props.row.shipCost) }}
+              {{
+                normalize(
+                  (Number(props.row.orderNew) + Number(props.row.orderOld)) *
+                    30000
+                )
+              }}
+            </span>
+            <span v-else-if="props.column.field === 'incomeNetTotal'">
+              {{
+                normalize(
+                  Number(props.row.incomeNew) +
+                    Number(props.row.incomeOld) -
+                    (Number(props.row.orderNew) + Number(props.row.orderOld)) *
+                      30000
+                )
+              }}
             </span>
             <span v-else-if="props.column.field === 'incomeNetAvg'">
-              {{ normalize(props.row.incomeNetAvg) }}
+              {{
+                normalize(
+                  Math.round(
+                    (Number(props.row.incomeNew) +
+                      Number(props.row.incomeOld) -
+                      (Number(props.row.orderNew) +
+                        Number(props.row.orderOld)) *
+                        30000) /
+                      (Number(props.row.orderNew) +
+                        Number(props.row.orderOld) || 1)
+                  )
+                )
+              }}
             </span>
-            <span v-else-if="props.column.field === 'completionRate'">
-              {{ props.row.completionRate + "%" }}
-            </span>
-            <span v-else-if="props.column.field === 'adsReal'">
-              {{ normalize(props.row.adsReal) }}
-            </span>
-            <span v-else-if="props.column.field === 'income'">
-              {{ normalize(props.row.income) }}
-            </span>
-            <span v-else-if="props.column.field === 'incomeAverage'">
-              {{ normalize(props.row.incomeAverage) }}
-            </span>
-            <span v-else-if="props.column.field === 'incomeProjection'">
-              {{ normalize(props.row.incomeProjection) }}
-            </span>
-            <span v-else-if="props.column.field === 'completionProjection'">
-              {{ props.row.completionProjection + "%" }}
-            </span>
-            <span v-else-if="props.column.field === 'progressReview'">
-              <b-badge :variant="statusVariant(props.row.progressReview)">
-                {{ props.row.progressReview }}
-              </b-badge>
-            </span>
-            <span v-else-if="props.column.field === 'feeReview'">
-              <b-badge :variant="statusVariant(props.row.feeReview)">
-                {{ props.row.feeReview }}
-              </b-badge>
+            <span v-else-if="props.column.field === 'conversionRate'">
+              {{
+                Math.round(
+                  (Number(props.row.orderNew) + Number(props.row.orderOld)) /
+                    (Number(props.row.dataNew) + Number(props.row.dataOld) || 1)
+                ) + "%"
+              }}
             </span>
             <span
               v-else-if="props.column.field === 'action'"
@@ -172,9 +201,7 @@
                     />
                   </template>
                   <b-dropdown-item
-                    @click="
-                      $router.push(`/reports/entry/month/${props.row.id}`)
-                    "
+                    @click="$router.push(`/reports/entry/sale/${props.row.id}`)"
                   >
                     <feather-icon icon="Edit2Icon" class="mr-50" />
                     <span>Sửa</span>
@@ -272,19 +299,8 @@ export default {
   data() {
     return {
       totalColumns: {
-        income: 0,
-        incomeReal: 0,
-        incomeNet: 0,
-        shipCost: 0,
-        orderCount: 0,
-        incomeAverage: 0,
-        adsRate: 0,
-        completionRate: 0,
-        adsReal: 0,
-        win: 0,
-        winReal: 0,
-        incomeProjection: 0,
-        completionProjection: 0,
+        incomeNew: 0,
+        incomeOld: 0,
       },
       exportExcelData: {
         columns: [],
@@ -295,8 +311,8 @@ export default {
       dir: false,
       columns: [
         {
-          label: "Tháng",
-          field: "tern",
+          label: "Ngày báo cáo",
+          field: "date",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -305,6 +321,14 @@ export default {
         {
           label: "Họ tên",
           field: "userName",
+          filterOptions: {
+            enabled: true,
+            placeholder: "Lọc",
+          },
+        },
+        {
+          label: "Vị trí",
+          field: "position",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -327,26 +351,72 @@ export default {
           },
         },
         {
-          label: "Doanh số mục tiêu",
-          field: "income",
+          label: "Doanh số sale",
+          field: "incomeNew",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
-          tdClass: "font-weight-bold text-danger",
         },
         {
-          label: "Doanh số",
-          field: "incomeReal",
+          label: "Doanh số cskh",
+          field: "incomeOld",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
-          tdClass: "font-weight-bold text-success",
         },
         {
-          label: "Doanh số sau ship",
-          field: "incomeNet",
+          label: "Data sale",
+          field: "dataNew",
+          filterOptions: {
+            enabled: true,
+            placeholder: "Lọc",
+          },
+        },
+        {
+          label: "Data cskh",
+          field: "dataOld",
+          filterOptions: {
+            enabled: true,
+            placeholder: "Lọc",
+          },
+        },
+        {
+          label: "Tổng data",
+          field: "dataTotal",
+          filterOptions: {
+            enabled: true,
+            placeholder: "Lọc",
+          },
+        },
+        {
+          label: "Số đơn Sale",
+          field: "orderNew",
+          filterOptions: {
+            enabled: true,
+            placeholder: "Lọc",
+          },
+        },
+        {
+          label: "Số đơn CSKH",
+          field: "orderOld",
+          filterOptions: {
+            enabled: true,
+            placeholder: "Lọc",
+          },
+        },
+        {
+          label: "Tổng đơn",
+          field: "orderTotal",
+          filterOptions: {
+            enabled: true,
+            placeholder: "Lọc",
+          },
+        },
+        {
+          label: "Tổng doanh số",
+          field: "incomeTotal",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -361,15 +431,15 @@ export default {
           },
         },
         {
-          label: "Số đơn hàng",
-          field: "orderCount",
+          label: "Tổng doanh số sau ship",
+          field: "incomeNetTotal",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
         },
         {
-          label: "Trung bình đơn",
+          label: "Trung bình đơn thực tế",
           field: "incomeNetAvg",
           filterOptions: {
             enabled: true,
@@ -377,80 +447,8 @@ export default {
           },
         },
         {
-          label: "Doanh số trung bình",
-          field: "incomeAverage",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Lọc",
-          },
-        },
-        {
-          label: "Tỉ lệ hoàn thành",
-          field: "completionRate",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Lọc",
-          },
-        },
-        {
-          label: "Chi phí ads",
-          field: "adsReal",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Lọc",
-          },
-        },
-        {
-          label: "Tỉ lệ ads",
-          field: "adsRate",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Lọc",
-          },
-        },
-        {
-          label: "Mã win kế hoạch",
-          field: "win",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Lọc",
-          },
-        },
-        {
-          label: "Mã win thực tế",
-          field: "winReal",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Lọc",
-          },
-        },
-        {
-          label: "Dự báo doanh số cuối tháng",
-          field: "incomeProjection",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Lọc",
-          },
-        },
-        {
-          label: "Dự báo tỉ lệ hoàn thành",
-          field: "completionProjection",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Lọc",
-          },
-        },
-        {
-          label: "Đánh giá tiến độ",
-          field: "progressReview",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Lọc",
-          },
-        },
-        {
-          label: "Đánh giá chi phí",
-          field: "feeReview",
+          label: "Tỉ lệ chốt",
+          field: "conversionRate",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -473,13 +471,10 @@ export default {
     statusVariant() {
       const statusColor = {
         /* eslint-disable key-spacing */
-        "Xuất sắc": "light-success",
-        "Tiêu chuẩn": "light-info",
-        "Chậm tiến độ": "light-danger",
+        "Tiêu chuẩn": "light-success",
         "Quá ngưỡng": "light-danger",
         /* eslint-enable key-spacing */
       };
-
       return (status) => statusColor[status];
     },
     direction() {
@@ -502,70 +497,57 @@ export default {
       };
     });
     await this.getData();
-    this.getTotal();
+    await this.getTotal();
   },
   methods: {
     async getTotal() {
-      this.totalColumns.income = 0;
-      this.totalColumns.incomeReal = 0;
-      this.totalColumns.incomeNet = 0;
+      this.totalColumns.incomeNew = 0;
+      this.totalColumns.incomeOld = 0;
+      this.totalColumns.dataNew = 0;
+      this.totalColumns.dataOld = 0;
+      this.totalColumns.orderNew = 0;
+      this.totalColumns.orderOld = 0;
+      this.totalColumns.dataTotal = 0;
+      this.totalColumns.orderTotal = 0;
+      this.totalColumns.incomeTotal = 0;
       this.totalColumns.shipCost = 0;
-      this.totalColumns.orderCount = 0;
+      this.totalColumns.incomeNetTotal = 0;
       this.totalColumns.incomeNetAvg = 0;
-      this.totalColumns.incomeAverage = 0;
-      this.totalColumns.adsRate = 0;
-      this.totalColumns.completionRate = 0;
-      this.totalColumns.adsReal = 0;
-      this.totalColumns.win = 0;
-      this.totalColumns.winReal = 0;
-      this.totalColumns.incomeProjection = 0;
-      this.totalColumns.completionProjection = 0;
+      this.totalColumns.conversionRate = 0;
       this.filteredRows.forEach((item) => {
-        this.totalColumns.income += Number(item.income);
-        this.totalColumns.incomeReal += Number(item.incomeReal);
-        this.totalColumns.incomeNet += Number(item.incomeNet);
-        this.totalColumns.shipCost += Number(item.shipCost);
-        this.totalColumns.orderCount += Number(item.orderCount);
-        this.totalColumns.incomeNetAvg += Number(item.incomeNetAvg);
-        this.totalColumns.incomeAverage += Number(item.incomeAverage);
-        this.totalColumns.completionRate += Number(item.completionRate);
-        this.totalColumns.adsReal += Number(item.adsReal);
-        this.totalColumns.win += Number(item.win);
-        this.totalColumns.winReal += Number(item.winReal);
-        this.totalColumns.incomeProjection += Number(item.incomeProjection);
-        this.totalColumns.completionProjection += Number(
-          item.completionProjection
-        );
+        this.totalColumns.incomeNew += Number(item.incomeNew);
+        this.totalColumns.incomeOld += Number(item.incomeOld);
+        this.totalColumns.dataNew += Number(item.dataNew);
+        this.totalColumns.dataOld += Number(item.dataOld);
+        this.totalColumns.orderNew += Number(item.orderNew);
+        this.totalColumns.orderOld += Number(item.orderOld);
       });
-      this.totalColumns.adsRate =
-        Math.round(
-          (this.totalColumns.adsReal / this.totalColumns.incomeReal) * 100
-        ) + "%";
-      this.totalColumns.completionRate =
-        Math.round(
-          (this.totalColumns.incomeReal / this.totalColumns.income) * 100
-        ) + "%";
-      this.totalColumns.completionProjection =
-        Math.round(
-          (this.totalColumns.incomeProjection / this.totalColumns.income) * 100
-        ) + "%";
-      this.totalColumns.income = this.normalize(this.totalColumns.income);
-      this.totalColumns.incomeReal = this.normalize(
-        this.totalColumns.incomeReal
+      this.totalColumns.incomeNew = this.totalColumns.incomeNew;
+      this.totalColumns.incomeOld = this.totalColumns.incomeOld;
+      this.totalColumns.dataNew = this.totalColumns.dataNew;
+      this.totalColumns.dataOld = this.totalColumns.dataOld;
+      this.totalColumns.orderNew = this.totalColumns.orderNew;
+      this.totalColumns.orderOld = this.totalColumns.orderOld;
+
+      this.totalColumns.dataTotal =
+        this.totalColumns.dataNew + this.totalColumns.dataOld;
+      this.totalColumns.orderTotal =
+        this.totalColumns.orderNew + this.totalColumns.orderOld;
+      this.totalColumns.incomeTotal =
+        this.totalColumns.incomeNew + this.totalColumns.incomeOld;
+      this.totalColumns.shipCost =
+        (this.totalColumns.orderNew + this.totalColumns.orderOld) * 30000;
+      this.totalColumns.incomeNetTotal =
+        this.totalColumns.incomeTotal - this.totalColumns.shipCost;
+      this.totalColumns.incomeNetAvg = Math.round(
+        this.totalColumns.incomeNetTotal / (this.totalColumns.orderTotal || 1)
       );
-      this.totalColumns.incomeNet = this.normalize(this.totalColumns.incomeNet);
-      this.totalColumns.shipCost = this.normalize(this.totalColumns.shipCost);
-      this.totalColumns.incomeNetAvg = this.normalize(this.totalColumns.incomeNetAvg);
-      this.totalColumns.adsReal = this.normalize(this.totalColumns.adsReal);
-      this.totalColumns.incomeProjection = this.normalize(
-        this.totalColumns.incomeProjection
-      );
-      this.totalColumns.incomeAverage = this.normalize(
-        this.totalColumns.incomeAverage
+      this.totalColumns.conversionRate = Math.round(
+        this.totalColumns.orderTotal / (this.totalColumns.dataTotal || 1)
       );
     },
     async getData() {
-      await this.$callApi.get("/api/getReports/userPerformance").then((res) => {
+      await this.$callApi.get("/api/getReports/sale").then((res) => {
         const data = res.data.data.filter((item) => {
           switch (this.userData.role) {
             case "ADMIN":
@@ -592,7 +574,7 @@ export default {
     },
     async deleteItem(id) {
       await this.$callApi
-        .delete("/api/monthReports/" + id)
+        .delete("/api/getReports/sale/" + id)
         .then(async () => {
           await this.getData();
           this.$toast({

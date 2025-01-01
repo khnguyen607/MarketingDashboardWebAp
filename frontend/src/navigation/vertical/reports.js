@@ -101,31 +101,31 @@ export default [
     children: [
       {
         title: "5.1 Nhân viên chi tiết",
-        route: "reports-query-sale-detail",
+        route: "reports-query-sale",
         action: "read",
         resource: "ACL",
       },
       {
-        title: "5.2 Hiệu suất nhân viên",
+        title: "5.2 Team chi tiết",
+        route: "reports-query-sale-team",
+        action: "read",
+        resource: "ACL",
+      },
+      {
+        title: "5.3 Hiệu suất nhân viên",
         route: "reports-query-sale-month",
         action: "read",
         resource: "ACL",
       },
       {
-        title: "5.3 Hiệu suất team",
-        route: "reports-query-sale-month",
-        action: "read",
-        resource: "ACL",
-      },
-      {
-        title: "5.4 Team chi tiết",
-        route: "reports-query-sale-detail",
+        title: "5.4 Hiệu suất team",
+        route: "reports-query-sale-team-month",
         action: "read",
         resource: "ACL",
       },
       {
         title: "5.5 Tổng hợp tháng",
-        route: "reports-query-sale",
+        route: "reports-query-sale-review",
         action: "read",
         resource: "ACL",
       },

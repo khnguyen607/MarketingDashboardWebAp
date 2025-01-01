@@ -65,7 +65,7 @@
               <div class="form-label-group">
                 <b-form-input
                   required
-                  v-model="dataForm.newIncome"
+                  v-model="dataForm.incomeNew"
                   id="mc-new-income"
                   type="number"
                   placeholder="Doanh số sale"
@@ -78,7 +78,7 @@
               <div class="form-label-group">
                 <b-form-input
                   required
-                  v-model="dataForm.oldIncome"
+                  v-model="dataForm.incomeOld"
                   id="mc-old-income"
                   type="number"
                   placeholder="Doanh số cskh"
@@ -202,8 +202,8 @@ export default {
         teamId: JSON.parse(localStorage.getItem("userData")).teamId,
         branchId: JSON.parse(localStorage.getItem("userData")).branchId,
         date: new Date().toISOString().split("T")[0],
-        newIncome: null,
-        oldIncome: null,
+        incomeNew: null,
+        incomeOld: null,
         dataNew: null,
         dataOld: null,
         orderNew: null,
@@ -259,8 +259,8 @@ export default {
             teamId: JSON.parse(localStorage.getItem("userData")).teamId,
             branchId: JSON.parse(localStorage.getItem("userData")).branchId,
             date: new Date().toISOString().split("T")[0],
-            newIncome: null,
-            oldIncome: null,
+            incomeNew: null,
+            incomeOld: null,
             dataNew: null,
             dataOld: null,
             orderNew: null,

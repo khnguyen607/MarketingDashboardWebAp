@@ -5,16 +5,21 @@ const {
   marketingTeam,
   marketingMonth,
   marketingTeamMonth,
+
+  sale,
+  saleMonth,
+
   bonus,
   bonusMonth,
+
   userReview,
+  userEliteClub,
+  
   getDashboard,
   getIncomeDaily,
   getIncomeYear,
   getUserPromotion,
   getSaleMonth,
-  userEliteClub,
-  saleMonth,
 } = require("../controllers/getReportController");
 
 const router = express.Router();
@@ -24,15 +29,19 @@ router.get("/marketing", authMiddleware, marketing);
 router.get("/marketingTeam", authMiddleware, marketingTeam);
 router.get("/marketingMonth", authMiddleware, marketingMonth);
 router.get("/marketingTeamMonth", authMiddleware, marketingTeamMonth);
+
+router.get("/sale", authMiddleware, sale);
+router.get("/saleMonth", authMiddleware, saleMonth);
+
 router.get("/bonus", authMiddleware, bonus);
 router.get("/bonusMonth", authMiddleware, bonusMonth);
 router.get("/userReview", authMiddleware, userReview);
+router.get("/userEliteClub", authMiddleware, userEliteClub);
+
 router.post("/getDashboard", authMiddleware, getDashboard);
 router.post("/getIncomeDaily", authMiddleware, getIncomeDaily);
 router.post("/getIncomeYear", authMiddleware, getIncomeYear);
 router.post("/getUserPromotion", authMiddleware, getUserPromotion);
 router.post("/getSaleMonth", authMiddleware, getSaleMonth);
-router.get("/userEliteClub", authMiddleware, userEliteClub);
-router.get("/saleMonth", authMiddleware, saleMonth);
 
 module.exports = router;

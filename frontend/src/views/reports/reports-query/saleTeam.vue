@@ -28,13 +28,13 @@
             <span v-if="props.column.label == 'Doanh số sale'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                normalize(totalColumns.newIncome)
+                normalize(totalColumns.incomeNew)
               }}</span>
             </span>
             <span v-else-if="props.column.label == 'Doanh số cskh'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
-                normalize(totalColumns.oldIncome)
+                normalize(totalColumns.incomeOld)
               }}</span>
             </span>
             <span v-else-if="props.column.label == 'Data sale'">
@@ -105,11 +105,11 @@
             </span>
           </template>
           <template slot="table-row" slot-scope="props">
-            <span v-if="props.column.field === 'oldIncome'">
-              {{ normalize(props.row.oldIncome) }}
+            <span v-if="props.column.field === 'incomeOld'">
+              {{ normalize(props.row.incomeOld) }}
             </span>
-            <span v-else-if="props.column.field === 'newIncome'">
-              {{ normalize(props.row.newIncome) }}
+            <span v-else-if="props.column.field === 'incomeNew'">
+              {{ normalize(props.row.incomeNew) }}
             </span>
             <span v-else-if="props.column.field === 'dataNew'">
               {{ normalize(props.row.dataNew) }}
@@ -138,7 +138,7 @@
             <span v-else-if="props.column.field === 'incomeTotal'">
               {{
                 normalize(
-                  Number(props.row.newIncome) + Number(props.row.oldIncome)
+                  Number(props.row.incomeNew) + Number(props.row.incomeOld)
                 )
               }}
             </span>
@@ -153,8 +153,8 @@
             <span v-else-if="props.column.field === 'incomeNetTotal'">
               {{
                 normalize(
-                  Number(props.row.newIncome) +
-                    Number(props.row.oldIncome) -
+                  Number(props.row.incomeNew) +
+                    Number(props.row.incomeOld) -
                     (Number(props.row.orderNew) + Number(props.row.orderOld)) *
                       30000
                 )
@@ -164,8 +164,8 @@
               {{
                 normalize(
                   Math.round(
-                    (Number(props.row.newIncome) +
-                      Number(props.row.oldIncome) -
+                    (Number(props.row.incomeNew) +
+                      Number(props.row.incomeOld) -
                       (Number(props.row.orderNew) +
                         Number(props.row.orderOld)) *
                         30000) /
@@ -299,8 +299,8 @@ export default {
   data() {
     return {
       totalColumns: {
-        newIncome: 0,
-        oldIncome: 0,
+        incomeNew: 0,
+        incomeOld: 0,
       },
       exportExcelData: {
         columns: [],
@@ -352,7 +352,7 @@ export default {
         },
         {
           label: "Doanh số sale",
-          field: "newIncome",
+          field: "incomeNew",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -360,7 +360,7 @@ export default {
         },
         {
           label: "Doanh số cskh",
-          field: "oldIncome",
+          field: "incomeOld",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -501,8 +501,8 @@ export default {
   },
   methods: {
     async getTotal() {
-      this.totalColumns.newIncome = 0;
-      this.totalColumns.oldIncome = 0;
+      this.totalColumns.incomeNew = 0;
+      this.totalColumns.incomeOld = 0;
       this.totalColumns.dataNew = 0;
       this.totalColumns.dataOld = 0;
       this.totalColumns.orderNew = 0;
@@ -515,15 +515,15 @@ export default {
       this.totalColumns.incomeNetAvg = 0;
       this.totalColumns.conversionRate = 0;
       this.filteredRows.forEach((item) => {
-        this.totalColumns.newIncome += Number(item.newIncome);
-        this.totalColumns.oldIncome += Number(item.oldIncome);
+        this.totalColumns.incomeNew += Number(item.incomeNew);
+        this.totalColumns.incomeOld += Number(item.incomeOld);
         this.totalColumns.dataNew += Number(item.dataNew);
         this.totalColumns.dataOld += Number(item.dataOld);
         this.totalColumns.orderNew += Number(item.orderNew);
         this.totalColumns.orderOld += Number(item.orderOld);
       });
-      this.totalColumns.newIncome = this.totalColumns.newIncome;
-      this.totalColumns.oldIncome = this.totalColumns.oldIncome;
+      this.totalColumns.incomeNew = this.totalColumns.incomeNew;
+      this.totalColumns.incomeOld = this.totalColumns.incomeOld;
       this.totalColumns.dataNew = this.totalColumns.dataNew;
       this.totalColumns.dataOld = this.totalColumns.dataOld;
       this.totalColumns.orderNew = this.totalColumns.orderNew;
@@ -534,7 +534,7 @@ export default {
       this.totalColumns.orderTotal =
         this.totalColumns.orderNew + this.totalColumns.orderOld;
       this.totalColumns.incomeTotal =
-        this.totalColumns.newIncome + this.totalColumns.oldIncome;
+        this.totalColumns.incomeNew + this.totalColumns.incomeOld;
       this.totalColumns.shipCost =
         (this.totalColumns.orderNew + this.totalColumns.orderOld) * 30000;
       this.totalColumns.incomeNetTotal =
@@ -547,7 +547,7 @@ export default {
       );
     },
     async getData() {
-      await this.$callApi.get("/api/saleReports").then((res) => {
+      await this.$callApi.get("/api/getReports/sale").then((res) => {
         const data = res.data.data.filter((item) => {
           switch (this.userData.role) {
             case "ADMIN":
@@ -574,7 +574,7 @@ export default {
     },
     async deleteItem(id) {
       await this.$callApi
-        .delete("/api/saleReports/" + id)
+        .delete("/api/getReports/sale/" + id)
         .then(async () => {
           await this.getData();
           this.$toast({

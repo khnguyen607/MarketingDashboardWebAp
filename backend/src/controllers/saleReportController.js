@@ -1,47 +1,16 @@
-const { User, Team, Branch, SaleReport } = require("../config/associations");
-const Modal = SaleReport;
-// const Modal = require("../models/sale_reports");
+const Modal = require("../models/sale_reports");
 
 // Lấy danh sách tất cả
 const getAlls = async (req, res) => {
   try {
-    const saleReports = await Modal.findAll({
-      include: [
-        { model: User, attributes: ["name"] },
-        { model: Team, attributes: ["name"] },
-        { model: Branch, attributes: ["name"] },
-      ],
-      raw: true,
-    });
-    saleReports.forEach((report) => {
-      const date = new Date(report.date);
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const year = date.getFullYear();
-      report.date = `${day}/${month}/${year}`;
-    });
-    const formatted = saleReports.map((data) => ({
-      ...data,
-      userName: data["User.name"],
-      teamName: data["Team.name"],
-      branchName: data["Branch.name"],
-    }));
+    const datas = await Modal.findAll();
     res.status(200).json({
       message: "Retrieved successfully",
-      data: formatted,
+      data: datas,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-  // try {
-  //   const datas = await Modal.findAll();
-  //   res.status(200).json({
-  //     message: "Retrieved successfully",
-  //     data: datas,
-  //   });
-  // } catch (error) {
-  //   res.status(500).json({ error: error.message });
-  // }
 };
 
 // Lấy theo ID
@@ -72,8 +41,8 @@ const createModel = async (req, res) => {
       teamId,
       branchId,
       date,
-      newIncome,
-      oldIncome,
+      incomeNew,
+      incomeOld,
       dataNew,
       dataOld,
       orderNew,
@@ -86,8 +55,8 @@ const createModel = async (req, res) => {
       teamId,
       branchId,
       date,
-      newIncome,
-      oldIncome,
+      incomeNew,
+      incomeOld,
       dataNew,
       dataOld,
       orderNew,
@@ -117,8 +86,8 @@ const updateModel = async (req, res) => {
       teamId,
       branchId,
       date,
-      newIncome,
-      oldIncome,
+      incomeNew,
+      incomeOld,
       dataNew,
       dataOld,
       orderNew,
@@ -137,8 +106,8 @@ const updateModel = async (req, res) => {
       teamId,
       branchId,
       date,
-      newIncome,
-      oldIncome,
+      incomeNew,
+      incomeOld,
       dataNew,
       dataOld,
       orderNew,
