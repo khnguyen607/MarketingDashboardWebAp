@@ -1,4 +1,4 @@
-import ExcelJS from "exceljs";
+// import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
 /**
@@ -8,39 +8,38 @@ import { saveAs } from "file-saver";
  * @param {Array} columns - Cấu hình các cột trong Excel (label, field, width)
  */
 export async function exportExcel(
+  XLSX,
   fileName = "Report.xlsx",
   data = [],
   columns = []
 ) {
   try {
-    // Tạo workbook và worksheet
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Report");
+    // Tạo worksheet và workbook
+    const sheetData = [
+      columns.map((col) => col.label), // Dòng đầu tiên: Tiêu đề cột
+      ...data.map(
+        (row) => columns.map((col) => row[col.field]) // Chuyển dữ liệu sang mảng theo thứ tự cột
+      ),
+    ];
 
-    // Định nghĩa các cột
-    worksheet.columns = columns.map((col) => ({
-      header: col.label, // Tên cột
-      key: col.field, // Thuộc tính trong dữ liệu
-      width: col.width || 20, // Chiều rộng cột mặc định
-    }));
+    const worksheet = XLSX.utils.aoa_to_sheet(sheetData); // Chuyển dữ liệu thành worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
 
-    // Thêm dữ liệu vào worksheet
-    data.forEach((row) => {
-      worksheet.addRow(row);
+    // Thiết lập độ rộng cột (SheetJS không hỗ trợ native width, cần xử lý riêng)
+    worksheet["!cols"] = columns.map((col) => ({ wch: col.width || 20 }));
+
+    // Xuất file Excel
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
     });
 
-    // Định dạng tiêu đề (style cho hàng đầu tiên)
-    worksheet.getRow(1).font = { bold: true };
-    worksheet.getRow(1).alignment = {
-      vertical: "middle",
-      horizontal: "center",
-    };
-
-    // Ghi workbook thành buffer
-    const buffer = await workbook.xlsx.writeBuffer();
-
     // Sử dụng FileSaver để tải file xuống
-    saveAs(new Blob([buffer]), fileName);
+    saveAs(
+      new Blob([excelBuffer], { type: "application/octet-stream" }),
+      fileName
+    );
   } catch (error) {
     console.error("Lỗi khi xuất Excel:", error);
   }

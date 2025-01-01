@@ -63,10 +63,10 @@
                 {{ normalize(Number(props.row.income)) }}
               </span>
               <span v-else-if="props.column.field === 'incomeAvg'">
-                {{ normalize(Number(props.row.income)) }}
+                {{ normalize(Number(props.row.incomeAvg)) }}
               </span>
               <span v-else-if="props.column.field === 'adsTotal'">
-                {{ normalize(Number(props.row.income)) }}
+                {{ normalize(Number(props.row.adsTotal)) }}
               </span>
               <span v-else-if="props.column.field === 'adsRate'">
                 {{ props.row.adsRate + "%" }}
@@ -75,9 +75,6 @@
                 <b-badge :variant="statusVariant(props.row.review)">
                   {{ props.row.review }}
                 </b-badge>
-              </span>
-              <span v-else-if="props.column.field === 'condition'">
-                <span>Doanh số >= 400.000.000 ₫, Tỉ lệ ads <=40% </span>
               </span>
             </template>
             <!-- pagination -->
@@ -196,7 +193,7 @@ export default {
           tdClass: "text-nowrap",
         },
         {
-          label: "Tổng doanh số của năm",
+          label: "Tổng doanh số",
           field: "income",
           filterOptions: {
             enabled: true,
@@ -204,7 +201,7 @@ export default {
           },
         },
         {
-          label: "Doanh số trung bình/tháng",
+          label: "Doanh số trung bình",
           field: "incomeAvg",
           filterOptions: {
             enabled: true,
@@ -306,6 +303,7 @@ export default {
     },
     exportToExcel() {
       exportExcel(
+        this.$XLSX,
         "Report.xlsx",
         this.filteredRows,
         this.exportExcelData.columns

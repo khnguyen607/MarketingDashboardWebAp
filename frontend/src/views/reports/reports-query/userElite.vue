@@ -162,7 +162,7 @@ export default {
           },
         },
         {
-          label: "Doanh số thực tế",
+          label: "Doanh số sau ship",
           field: "income",
           filterOptions: {
             enabled: true,
@@ -245,6 +245,7 @@ export default {
     },
     exportToExcel() {
       exportExcel(
+        this.$XLSX,
         "Report.xlsx",
         this.filteredRows,
         this.exportExcelData.columns

@@ -24,19 +24,17 @@
           }"
         >
           <template slot="table-column" slot-scope="props">
-            <span v-if="columns.find((x) => x.label == props.column.label).sum">
-              <span class="me-2">{{ props.column.label }}</span>
-              <span class="badge bg-success fs-6">
-                {{ normalize(totalColumns[props.column.field] || 0) }}
-              </span>
-            </span>
-            <span v-else-if="props.column.field == 'adsRate'">
+            <span v-if="labelMapping[props.column.label]">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">
-                {{
-                  Math.round((totalColumns.ads / totalColumns.incomeNet) * 100)
-                }}%
+                {{ normalize(totalColumns[labelMapping[props.column.label]]) }}
               </span>
+            </span>
+            <span v-else-if="props.column.label == 'Tỉ lệ Ads/doanh số'">
+              <span class="me-2">{{ props.column.label }}:</span>
+              <span class="badge bg-success fs-6">{{
+                totalColumns.adsRate
+              }}</span>
             </span>
           </template>
           <template slot="table-row" slot-scope="props">
@@ -142,8 +140,17 @@ export default {
   },
   data() {
     return {
+      labelMapping: {
+        "Doanh số sau ship": "income",
+        "Mã win": "win",
+        "Chi phí ADS": "ads",
+        "Tỉ lệ Ads/doanh số": "adsRate",
+      },
       totalColumns: {
         income: 0,
+        win: 0,
+        ads: 0,
+        adsRate: 0,
       },
       exportExcelData: {
         columns: [],
@@ -178,56 +185,12 @@ export default {
           },
         },
         {
-          label: "Doanh số",
+          label: "Doanh số sau ship",
           field: "income",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
-          sortable: false,
-          formatFn: (value) => {
-            return new Intl.NumberFormat("vi-VN").format(value);
-          },
-          sum: true,
-        },
-        {
-          label: "Doanh số sau ship",
-          field: "incomeNet",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Lọc",
-          },
-          sortable: false,
-          formatFn: (value) => {
-            return new Intl.NumberFormat("vi-VN").format(value);
-          },
-          sum: true,
-        },
-        {
-          label: "Số đơn hàng",
-          field: "orderCount",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Lọc",
-          },
-          sortable: false,
-          formatFn: (value) => {
-            return new Intl.NumberFormat("vi-VN").format(value);
-          },
-          sum: true,
-        },
-        {
-          label: "Phí ship",
-          field: "shipCost",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Lọc",
-          },
-          sortable: false,
-          formatFn: (value) => {
-            return new Intl.NumberFormat("vi-VN").format(value);
-          },
-          sum: true,
         },
         {
           label: "Mã win",
@@ -236,10 +199,6 @@ export default {
             enabled: true,
             placeholder: "Lọc",
           },
-          formatFn: (value) => {
-            return new Intl.NumberFormat("vi-VN").format(value);
-          },
-          sum: true,
         },
         {
           label: "Chi phí ADS",
@@ -248,20 +207,13 @@ export default {
             enabled: true,
             placeholder: "Lọc",
           },
-          formatFn: (value) => {
-            return new Intl.NumberFormat("vi-VN").format(value);
-          },
-          sum: true,
         },
         {
-          label: "Tỉ lệ ads",
+          label: "Tỉ lệ Ads/doanh số",
           field: "adsRate",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
-          },
-          formatFn: (value) => {
-            return value + "%";
           },
         },
         {
@@ -291,6 +243,12 @@ export default {
       };
       return (status) => statusColor[status];
     },
+    totalPrice() {
+      return this.data.reduce((sum, row) => sum + row.income, 0);
+    },
+    totalQuantity() {
+      return this.data.reduce((sum, row) => sum + row.income, 0);
+    },
   },
   async created() {
     this.exportExcelData.columns = this.columns.map((item) => {
@@ -301,32 +259,23 @@ export default {
       };
     });
     await this.getData();
-    this.initTotal();
+    this.getTotal();
   },
   methods: {
-    async initTotal() {
-      this.columns.forEach((item) => {
-        if (item.sum) {
-          this.totalColumns[item.field] = 0;
-        }
-      });
-      this.getTotal();
-    },
     async getTotal() {
-      // Danh sách các cột cần tính tổng
-      const keys = Object.keys(this.totalColumns);
-
-      // Reset giá trị tổng
-      keys.forEach((key) => {
-        this.totalColumns[key] = 0;
-      });
-
-      // Tính tổng cho từng thuộc tính
+      this.totalColumns.income = 0;
+      this.totalColumns.win = 0;
+      this.totalColumns.ads = 0;
       this.filteredRows.forEach((item) => {
-        keys.forEach((key) => {
-          this.totalColumns[key] += Number(item[key]) || 0;
-        });
+        this.totalColumns.income += Number(item.income);
+        this.totalColumns.win += Number(item.win);
+        this.totalColumns.ads += Number(item.ads);
       });
+      this.totalColumns.adsRate =
+        Math.round((this.totalColumns.ads / this.totalColumns.income) * 100) +
+        "%";
+      this.totalColumns.income = this.normalize(this.totalColumns.income);
+      this.totalColumns.ads = this.normalize(this.totalColumns.ads);
     },
     async getData() {
       await this.$callApi.get("/api/getReports/marketingTeam").then((res) => {

@@ -25,73 +25,29 @@
           }"
         >
           <template slot="table-column" slot-scope="props">
-            <span v-if="props.column.label == 'Doanh số mục tiêu'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.income
-              }}</span>
+            <span v-if="columns.find((x) => x.label == props.column.label).sum">
+              <span class="me-2">{{ props.column.label }}</span>
+              <span class="badge bg-success fs-6">
+                {{ normalize(totalColumns[props.column.field] || 0) }}
+              </span>
             </span>
-            <span v-else-if="props.column.label == 'Doanh số thực tế'">
+            <span v-else-if="props.column.field == 'adsRate'">
               <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.incomeNet
-              }}</span>
+              <span class="badge bg-success fs-6">
+                {{
+                  Math.round((totalColumns.ads / totalColumns.incomeNet) * 100)
+                }}%
+              </span>
             </span>
-            <span v-else-if="props.column.label == 'Doanh số trung bình/ngày'">
+            <span v-else-if="props.column.field == 'completionRate'">
               <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.incomeAvg
-              }}</span>
-            </span>
-            <span
-              v-else-if="props.column.label == 'Doanh số trung bình/nhân viên'"
-            >
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.incomeToUserAvg
-              }}</span>
-            </span>
-            <span v-else-if="props.column.label == 'Tỉ lệ hoàn thành'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.completionRate
-              }}</span>
-            </span>
-            <span v-else-if="props.column.label == 'Chi phí ads'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.ads
-              }}</span>
-            </span>
-            <span v-else-if="props.column.label == 'Tỉ lệ ads'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.adsRate
-              }}</span>
-            </span>
-            <span v-else-if="props.column.label == 'Mã win kế hoạch'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{ totalColumns.winTarget }}</span>
-            </span>
-            <span v-else-if="props.column.label == 'Mã win thực tế'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.win
-              }}</span>
-            </span>
-            <span
-              v-else-if="props.column.label == 'Dự báo doanh số cuối tháng'"
-            >
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.incomeProjection
-              }}</span>
-            </span>
-            <span v-else-if="props.column.label == 'Dự báo tỉ lệ hoàn thành'">
-              <span class="me-2">{{ props.column.label }}:</span>
-              <span class="badge bg-success fs-6">{{
-                totalColumns.completionRateProjection
-              }}</span>
+              <span class="badge bg-success fs-6">
+                {{
+                  Math.round(
+                    (totalColumns.incomeNet / totalColumns.incomeTarget) * 100
+                  )
+                }}%
+              </span>
             </span>
           </template>
           <template slot="table-row" slot-scope="props">
@@ -113,8 +69,8 @@
             <span v-else-if="props.column.field === 'ads'">
               {{ normalize(props.row.ads) }}
             </span>
-            <span v-else-if="props.column.field === 'income'">
-              {{ normalize(props.row.income) }}
+            <span v-else-if="props.column.field === 'incomeTarget'">
+              {{ normalize(props.row.incomeTarget) }}
             </span>
             <span v-else-if="props.column.field === 'incomeAvg'">
               {{ normalize(props.row.incomeAvg) }}
@@ -217,17 +173,7 @@ export default {
   data() {
     return {
       totalColumns: {
-        income: 0,
-        incomeNet: 0,
-        incomeAvg: 0,
-        incomeToUserAvg: 0,
-        adsRate: 0,
-        completionRate: 0,
-        ads: 0,
-        winTarget: 0,
-        win: 0,
-        incomeProjection: 0,
-        completionRateProjection: 0,
+        incomeTarget: 0,
       },
       exportExcelData: {
         columns: [],
@@ -263,53 +209,104 @@ export default {
         },
         {
           label: "Doanh số mục tiêu",
+          field: "incomeTarget",
+          filterOptions: {
+            enabled: true,
+            placeholder: "Lọc",
+          },
+          sortable: false,
+          formatFn: (value) => {
+            return new Intl.NumberFormat("vi-VN").format(value);
+          },
+          sum: true,
+        },
+        {
+          label: "Doanh số",
           field: "income",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
-          tdClass: "font-weight-bold text-danger",
+          sortable: false,
+          formatFn: (value) => {
+            return new Intl.NumberFormat("vi-VN").format(value);
+          },
+          sum: true,
         },
         {
-          label: "Doanh số thực tế",
+          label: "Doanh số sau ship",
           field: "incomeNet",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
-          tdClass: "font-weight-bold text-success",
+          sortable: false,
+          formatFn: (value) => {
+            return new Intl.NumberFormat("vi-VN").format(value);
+          },
+          sum: true,
         },
         {
-          label: "Doanh số trung bình/ngày",
-          field: "incomeAvg",
+          label: "Số đơn hàng",
+          field: "orderCount",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
+          sortable: false,
+          formatFn: (value) => {
+            return new Intl.NumberFormat("vi-VN").format(value);
+          },
+          sum: true,
         },
         {
-          label: "Doanh số trung bình/nhân viên",
-          field: "incomeToUserAvg",
+          label: "Phí ship",
+          field: "shipCost",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
+          sortable: false,
+          formatFn: (value) => {
+            return new Intl.NumberFormat("vi-VN").format(value);
+          },
+          sum: true,
         },
         {
-          label: "Tỉ lệ hoàn thành",
-          field: "completionRate",
+          label: "Mã win mục tiêu",
+          field: "winTarget",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
+          formatFn: (value) => {
+            return new Intl.NumberFormat("vi-VN").format(value);
+          },
+          sum: true,
         },
         {
-          label: "Chi phí ads",
+          label: "Mã win",
+          field: "win",
+          filterOptions: {
+            enabled: true,
+            placeholder: "Lọc",
+          },
+          formatFn: (value) => {
+            return new Intl.NumberFormat("vi-VN").format(value);
+          },
+          sum: true,
+        },
+        {
+          label: "Chi phí ADS",
           field: "ads",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
+          formatFn: (value) => {
+            return new Intl.NumberFormat("vi-VN").format(value);
+          },
+          sum: true,
         },
         {
           label: "Tỉ lệ ads",
@@ -318,37 +315,66 @@ export default {
             enabled: true,
             placeholder: "Lọc",
           },
+          formatFn: (value) => {
+            return value + "%";
+          },
         },
         {
-          label: "Mã win kế hoạch",
-          field: "winTarget",
+          label: "Doanh số trung bình ngày",
+          field: "incomeAvg",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
+          formatFn: (value) => {
+            return new Intl.NumberFormat("vi-VN").format(value);
+          },
+          sum: true,
         },
         {
-          label: "Mã win thực tế",
-          field: "win",
+          label: "Doanh số trung bình nhân viên",
+          field: "incomeToUserAvg",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
+          formatFn: (value) => {
+            return new Intl.NumberFormat("vi-VN").format(value);
+          },
+          sum: true,
         },
         {
-          label: "Dự báo doanh số cuối tháng",
+          label: "Tỉ lệ hoàn thành",
+          field: "completionRate",
+          filterOptions: {
+            enabled: true,
+            placeholder: "Lọc",
+          },
+          formatFn: (value) => {
+            return value + "%";
+          },
+        },
+        {
+          label: "Doanh số dự kiến",
           field: "incomeProjection",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
           },
+          formatFn: (value) => {
+            return new Intl.NumberFormat("vi-VN").format(value);
+          },
+          sum: true,
         },
         {
-          label: "Dự báo tỉ lệ hoàn thành",
+          label: "Tỉ lệ hoàn thành dự kiến",
           field: "completionRateProjection",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
+          },
+          formatFn: (value) => {
+            return value + "%";
           },
         },
         {
@@ -408,83 +434,54 @@ export default {
         width: 30,
       };
     });
-    await this.$callApi.get("/api/getReports/marketingTeamMonth").then((res) => {
-      const data = res.data.data.filter((item) => {
-        switch (this.userData.role) {
-          case "ADMIN":
-            return true;
-          case "LEADERBRANCH":
-            return item.branchId == this.userData.branchId;
-          case "LEADER":
-            return item.teamId == this.userData.teamId;
-          case "USER":
-            return item.teamId == this.userData.teamId;
-        }
+    await this.$callApi
+      .get("/api/getReports/marketingTeamMonth")
+      .then((res) => {
+        const data = res.data.data.filter((item) => {
+          switch (this.userData.role) {
+            case "ADMIN":
+              return true;
+            case "LEADERBRANCH":
+              return item.branchId == this.userData.branchId;
+            case "LEADER":
+              return item.teamId == this.userData.teamId;
+            case "USER":
+              return item.teamId == this.userData.teamId;
+          }
+        });
+        this.rows = data.sort((a, b) => b.id - a.id);
+        this.rows = data;
       });
-      this.rows = data.sort((a, b) => b.id - a.id);
-      this.rows = data;
-    });
-    this.getTotal();
+    this.initTotal();
   },
   methods: {
-    async getTotal() {
-      this.totalColumns.income = 0;
-      this.totalColumns.incomeNet = 0;
-      this.totalColumns.incomeAvg = 0;
-      this.totalColumns.incomeToUserAvg = 0;
-      this.totalColumns.adsRate = 0;
-      this.totalColumns.completionRate = 0;
-      this.totalColumns.ads = 0;
-      this.totalColumns.winTarget = 0;
-      this.totalColumns.win = 0;
-      this.totalColumns.incomeProjection = 0;
-      this.totalColumns.completionRateProjection = 0;
-      this.filteredRows.forEach((item) => {
-        this.totalColumns.income += Number(item.income);
-        this.totalColumns.incomeNet += Number(item.incomeNet);
-        this.totalColumns.incomeAvg += Number(item.incomeAvg);
-        this.totalColumns.incomeToUserAvg += Number(
-          item.incomeToUserAvg
-        );
-        this.totalColumns.completionRate += Number(item.completionRate);
-        this.totalColumns.ads += Number(item.ads);
-        this.totalColumns.winTarget += Number(item.winTarget);
-        this.totalColumns.win += Number(item.win);
-        this.totalColumns.incomeProjection += Number(item.incomeProjection);
-        this.totalColumns.completionRateProjection += Number(
-          item.completionRateProjection
-        );
+    async initTotal() {
+      this.columns.forEach((item) => {
+        if (item.sum) {
+          this.totalColumns[item.field] = 0;
+        }
       });
-      this.totalColumns.adsRate =
-        Math.round(
-          (this.totalColumns.ads / this.totalColumns.incomeNet) * 100
-        ) + "%";
-      this.totalColumns.completionRate =
-        Math.round(
-          (this.totalColumns.incomeNet / this.totalColumns.income) * 100
-        ) + "%";
-      this.totalColumns.completionRateProjection =
-        Math.round(
-          (this.totalColumns.incomeProjection / this.totalColumns.income) * 100
-        ) + "%";
-      this.totalColumns.income = this.normalize(this.totalColumns.income);
-      this.totalColumns.incomeNet = this.normalize(
-        this.totalColumns.incomeNet
-      );
-      this.totalColumns.incomeToUserAvg = this.normalize(this.totalColumns.incomeToUserAvg);
-      this.totalColumns.ads = this.normalize(this.totalColumns.ads);
-      this.totalColumns.incomeProjection = this.normalize(
-        this.totalColumns.incomeProjection
-      );
-      this.totalColumns.incomeAvg = this.normalize(
-        this.totalColumns.incomeAvg
-      );
-      this.totalColumns.incomeAvg = this.normalize(
-        this.totalColumns.incomeToUserAvg
-      );
+      this.getTotal();
+    },
+    async getTotal() {
+      // Danh sách các cột cần tính tổng
+      const keys = Object.keys(this.totalColumns);
+
+      // Reset giá trị tổng
+      keys.forEach((key) => {
+        this.totalColumns[key] = 0;
+      });
+
+      // Tính tổng cho từng thuộc tính
+      this.filteredRows.forEach((item) => {
+        keys.forEach((key) => {
+          this.totalColumns[key] += Number(item[key]) || 0;
+        });
+      });
     },
     exportToExcel() {
       exportExcel(
+        this.$XLSX,
         "Report.xlsx",
         this.filteredRows,
         this.exportExcelData.columns

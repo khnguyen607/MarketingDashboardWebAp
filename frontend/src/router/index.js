@@ -13,7 +13,7 @@ import reports from "./routes/reports";
 import settings from "./routes/settings";
 import pages from "./routes/pages";
 
-import components from "./routes/components";
+// import components from "./routes/components";
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -29,7 +29,7 @@ const router = new VueRouter({
     ...settings,
     ...pages,
 
-    ...components,
+    // ...components,
     {
       path: "*",
       redirect: "error-404",

@@ -25,10 +25,10 @@
           }"
         >
           <template slot="table-column" slot-scope="props">
-            <span v-if="labelMapping[props.column.label]">
-              <span class="me-2">{{ props.column.label }}:</span>
+            <span v-if="columns.find((x) => x.label == props.column.label).sum">
+              <span class="me-2">{{ props.column.label }}</span>
               <span class="badge bg-success fs-6">
-                {{ normalize(totalColumns[labelMapping[props.column.label]]) }}
+                {{ normalize(totalColumns[props.column.field] || 0) }}
               </span>
             </span>
             <span v-else-if="props.column.field == 'adsRate'">
@@ -179,8 +179,9 @@ export default {
   },
   data() {
     return {
-      labelMapping: {},
-      totalColumns: {},
+      totalColumns: {
+        incomeTarget: 0,
+      },
       exportExcelData: {
         columns: [],
         rows: [],
@@ -332,7 +333,6 @@ export default {
           formatFn: (value) => {
             return value + "%";
           },
-          sum: true,
         },
         {
           label: "Tỉ lệ ads",
@@ -457,11 +457,8 @@ export default {
   },
   methods: {
     async initTotal() {
-      this.labelMapping = {};
-      this.totalColumns = {};
       this.columns.forEach((item) => {
         if (item.sum) {
-          this.labelMapping[item.label] = item.field;
           this.totalColumns[item.field] = 0;
         }
       });
@@ -482,10 +479,6 @@ export default {
           this.totalColumns[key] += Number(item[key]) || 0;
         });
       });
-
-      // keys.forEach((key) => {
-      //   this.totalColumns[key] = normalize(this.totalColumns[key]);
-      // });
     },
     async getData() {
       await this.$callApi.get("/api/getReports/marketingMonth").then((res) => {
@@ -507,6 +500,7 @@ export default {
     },
     exportToExcel() {
       exportExcel(
+        this.$XLSX,
         "Report.xlsx",
         this.filteredRows,
         this.exportExcelData.columns

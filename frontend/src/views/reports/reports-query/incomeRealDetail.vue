@@ -301,6 +301,7 @@ export default {
     },
     exportToExcel() {
       exportExcel(
+        this.$XLSX,
         "Report.xlsx",
         this.filteredRows,
         this.exportExcelData.columns

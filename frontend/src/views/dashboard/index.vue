@@ -323,7 +323,7 @@ export default {
           key: 0,
         },
         incomeCompletion: {
-          title: "Doanh số thực tế và so với kế hoạch",
+          title: "Doanh số sau ship và so với kế hoạch",
           data: {
             series: [
               {

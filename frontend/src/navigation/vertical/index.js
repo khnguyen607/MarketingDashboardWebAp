@@ -3,7 +3,7 @@ import reports from "./reports";
 import settings from "./settings";
 import support from "./support";
 
-import components from "./components";
+// import components from "./components";
 // Array of sections
 export default [
   ...dashboard,
@@ -11,5 +11,5 @@ export default [
   ...settings,
   ...support,
   
-  ...components,
+  // ...components,
 ];

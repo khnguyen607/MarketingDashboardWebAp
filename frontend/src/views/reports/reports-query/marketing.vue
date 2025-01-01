@@ -394,7 +394,9 @@ export default {
       this.totalColumns.income = this.normalize(this.totalColumns.income);
       this.totalColumns.ads = this.normalize(this.totalColumns.ads);
       this.totalColumns.incomeNet = this.normalize(this.totalColumns.incomeNet);
-      this.totalColumns.orderCount = this.normalize(this.totalColumns.orderCount);
+      this.totalColumns.orderCount = this.normalize(
+        this.totalColumns.orderCount
+      );
       this.totalColumns.shipCost = this.normalize(this.totalColumns.shipCost);
     },
     async getData() {
@@ -417,6 +419,7 @@ export default {
     },
     exportToExcel() {
       exportExcel(
+        this.$XLSX,
         "Report.xlsx",
         this.filteredRows,
         this.exportExcelData.columns

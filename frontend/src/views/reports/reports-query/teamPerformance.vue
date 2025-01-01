@@ -31,7 +31,7 @@
                 totalColumns.income
               }}</span>
             </span>
-            <span v-else-if="props.column.label == 'Doanh số thực tế'">
+            <span v-else-if="props.column.label == 'Doanh số sau ship'">
               <span class="me-2">{{ props.column.label }}:</span>
               <span class="badge bg-success fs-6">{{
                 totalColumns.incomeReal
@@ -271,7 +271,7 @@ export default {
           tdClass: "font-weight-bold text-danger",
         },
         {
-          label: "Doanh số thực tế",
+          label: "Doanh số sau ship",
           field: "incomeReal",
           filterOptions: {
             enabled: true,
@@ -485,6 +485,7 @@ export default {
     },
     exportToExcel() {
       exportExcel(
+        this.$XLSX,
         "Report.xlsx",
         this.filteredRows,
         this.exportExcelData.columns
