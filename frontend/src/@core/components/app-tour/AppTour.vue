@@ -2,7 +2,7 @@
     File Name: VxTour.vue
     Description: Tour Component
     ----------------------------------------------------------------------------------------
-    Item Name: Macas - Vuejs, HTML & Laravel Admin Dashboard Template
+    Item Name: Dasboard - Vuejs, HTML & Laravel Admin Dashboard Template
       Author: Pixinvent
     Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== -->

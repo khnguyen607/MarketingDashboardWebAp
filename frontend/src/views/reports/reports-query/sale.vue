@@ -1,7 +1,7 @@
 <template>
   <b-card p-5>
     <b-card-header class="d-flex justify-content-between align-items-center">
-      <b-card-title>Chi tiết báo cáo sale</b-card-title>
+      <b-card-title>Báo cáo sale-cskh nhân viên chi tiết</b-card-title>
       <div>
         <b-button variant="primary" class="btn-icon mx-2" @click="getTotal">
           <feather-icon icon="BarChartIcon" />

@@ -66,7 +66,7 @@
                   </template>
                   <b-dropdown-item
                     @click="
-                      $router.push(`/reports/entry/saleMonth/${props.row.id}`)
+                      $router.push(`/reports/entry/saleTarget/${props.row.id}`)
                     "
                   >
                     <feather-icon icon="Edit2Icon" class="mr-50" />
@@ -178,6 +178,14 @@ export default {
         {
           label: "Kỳ báo cáo",
           field: "tern",
+          filterOptions: {
+            enabled: true,
+            placeholder: "Lọc",
+          },
+        },
+        {
+          label: "Họ tên",
+          field: "userName",
           filterOptions: {
             enabled: true,
             placeholder: "Lọc",
@@ -428,7 +436,7 @@ export default {
     },
     async deleteItem(id) {
       await this.$callApi
-        .delete("/api/saleMonth/" + id)
+        .delete("/api/saleTarget/" + id)
         .then(async () => {
           await this.getData();
           this.$toast({

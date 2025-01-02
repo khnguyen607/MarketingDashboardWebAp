@@ -35,7 +35,7 @@
           <b-form-input
             id="boomark-search-input"
             v-model="searchQuery"
-            placeholder="Explore Macas..."
+            placeholder="Explore Dasboard..."
             autofocus
           />
         </div>

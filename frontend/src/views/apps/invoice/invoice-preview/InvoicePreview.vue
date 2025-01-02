@@ -46,7 +46,7 @@
                 <div class="logo-wrapper">
                   <logo />
                   <h3 class="text-primary invoice-logo">
-                    Macas
+                    Dasboard
                   </h3>
                 </div>
                 <p class="card-text mb-25">

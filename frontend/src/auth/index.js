@@ -1,13 +1,17 @@
 import { initialAbility } from "@/libs/acl/config";
 import useJwt from "@/auth/jwt/useJwt";
 import axios from "axios";
+import { $themeConfig } from "@themeConfig";
 
 // Lấy token từ localStorage
 const getToken = () => localStorage.getItem("access_token");
 
 // Tạo một instance của Axios
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === "development" ? "http://localhost:5000" : "/",
+  baseURL:
+    process.env.NODE_ENV === "development"
+      ? $themeConfig.app.URL_API_DEV
+      : $themeConfig.app.URL_API_PROD,
   // baseURL: "/", // Đặt URL gốc của API
   // baseURL: "http://localhost:5000", // Đặt URL gốc của API
   headers: {

@@ -21,13 +21,13 @@
       <div class="search-input-icon">
         <feather-icon icon="SearchIcon" />
       </div>
-      <!-- <input type="text" placeholder="Explore Macas...." class="form-control-input"> -->
+      <!-- <input type="text" placeholder="Explore Dasboard...." class="form-control-input"> -->
       <!-- @keyup.esc="escPressed" -->
       <!-- @keyup.enter="suggestionSelected" -->
       <b-form-input
         v-if="showSearchBar"
         v-model="searchQuery"
-        placeholder="Explore Macas"
+        placeholder="Explore Dasboard"
         autofocus
         autocomplete="off"
         @keyup.up="increaseIndex(false)"

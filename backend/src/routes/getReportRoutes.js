@@ -7,7 +7,9 @@ const {
   marketingTeamMonth,
 
   sale,
+  saleTeam,
   saleMonth,
+  saleTeamMonth,
 
   bonus,
   bonusMonth,
@@ -31,7 +33,9 @@ router.get("/marketingMonth", authMiddleware, marketingMonth);
 router.get("/marketingTeamMonth", authMiddleware, marketingTeamMonth);
 
 router.get("/sale", authMiddleware, sale);
+router.get("/saleTeam", authMiddleware, saleTeam);
 router.get("/saleMonth", authMiddleware, saleMonth);
+router.get("/saleTeamMonth", authMiddleware, saleTeamMonth);
 
 router.get("/bonus", authMiddleware, bonus);
 router.get("/bonusMonth", authMiddleware, bonusMonth);

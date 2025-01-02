@@ -4,9 +4,7 @@
       <b-col md="12">
         <b-card no-body class="card-statistics">
           <b-card-header>
-            <b-card-title
-              >Tổng quan hoạt động kinh doanh của MACAS</b-card-title
-            >
+            <b-card-title>Tổng quan hoạt động kinh doanh</b-card-title>
             <b-card-text
               class="font-small-2 mr-25 mb-0 d-flex align-items-center"
             >
@@ -19,18 +17,6 @@
                 />
               </b-form-group>
             </b-card-text>
-          </b-card-header>
-        </b-card>
-      </b-col>
-    </b-row>
-
-    <b-row class="match-height">
-      <b-col md="4">
-        <b-card no-body class="card-statistics">
-          <b-card-header>
-            <b-card-title style="font-weight: bold; font-size: 1.2rem"
-              >I. Báo cáo tháng</b-card-title
-            >
           </b-card-header>
         </b-card>
       </b-col>
@@ -169,18 +155,6 @@
     </b-row>
 
     <b-row class="match-height">
-      <b-col md="4">
-        <b-card no-body class="card-statistics">
-          <b-card-header>
-            <b-card-title style="font-weight: bold; font-size: 1.2rem"
-              >II. Doanh số nhân viên</b-card-title
-            >
-          </b-card-header>
-        </b-card>
-      </b-col>
-    </b-row>
-
-    <b-row class="match-height">
       <b-col lg="12">
         <BasicBarChart
           :title="charts.incomeUserRank.title"
@@ -214,7 +188,6 @@ import BasicBarChart from "./BasicBarChart.vue";
 import BasicBarRateChart from "./BasicBarRateChart.vue";
 import BasicDonutChart from "./BasicDonutChart.vue";
 import EmployeeChart from "./EmployeeChart.vue";
-import Statistics from "./Statistics.vue";
 import BasicCard from "./BasicCard.vue";
 
 export default {
@@ -232,7 +205,6 @@ export default {
     BasicBarChart,
     BasicBarRateChart,
     BasicDonutChart,
-    Statistics,
     BasicCard,
     BFormInput,
     BFormSelect,
@@ -437,15 +409,15 @@ export default {
     async getEmployeeData() {
       await this.$callApi.get("/api/getReports/marketingMonth").then((res) => {
         const data = res.data.data;
-        this.rawUserData = data;
-        // Lọc ra dữ liệu chỉ thuộc kỳ
-        const filteredData = data.filter(
+        this.rawUserData = data.filter(
           (item) =>
             item.tern ===
             `${this.selectedDate.split("-")[1]}/${
               this.selectedDate.split("-")[0]
             }`
         );
+        // Lọc ra dữ liệu chỉ thuộc kỳ
+        const filteredData = this.rawUserData;
         // Sắp xếp theo income giảm dần
         const sortedByIncomeDesc = [...filteredData].sort(
           (a, b) => b.incomeNet - a.incomeNet

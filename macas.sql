@@ -1151,7 +1151,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `phone`, `position`, `teamId`, `branchId`, `status`, `createdAt`, `updatedAt`) VALUES
-(1, 'Macas', 'macas@gmail.com', '$2a$10$8oxQ1.R8QGzQdMJJyMC2P.ENb70KgH5.ip/ZxllH5V/5ead6aIc1S', 'ADMIN', NULL, 'Giám đốc', 4, 2, 'Working', '2024-11-26 17:52:38', '2024-12-01 23:07:18'),
+(1, 'Dasboard', 'macas@gmail.com', '$2a$10$8oxQ1.R8QGzQdMJJyMC2P.ENb70KgH5.ip/ZxllH5V/5ead6aIc1S', 'ADMIN', NULL, 'Giám đốc', 4, 2, 'Working', '2024-11-26 17:52:38', '2024-12-01 23:07:18'),
 (15, 'Ngô Hường', 'hcns.macas22@gmail.com', '$2a$10$ZxKmswS6tmEOiEWiD/PCEu1j3cAv/pw4aA2X.Rca5djZKTInfNiHO', 'ADMIN', '0868969726', 'CTV', 7, 1, 'Working', '2024-12-02 09:44:14', '2024-12-02 09:47:29'),
 (16, 'Lê Đăng Sơn', 'dangsoncdt@gmail.com', '$2a$10$GdorNt6uEe61EZANra.g7eKv0SYu8NU71v4V6..hwVQDQxvTQnRr6', 'LEADERBRANCH', '0973982661', 'Giám đốc', 4, 1, 'Working', '2024-12-02 10:08:20', '2024-12-07 07:54:13'),
 (17, 'Lê Thành Minh', 'Lethanhminh784@gmail.com', '$2a$10$mUAszmp4z23HYvrrCSXNrOLPw.GXQ4StCIOCgZEv2ZzYuyEJilmr.', 'USER', '0397483770', 'Marketing', 5, 1, 'Working', '2024-12-02 10:09:15', '2024-12-02 10:09:15'),

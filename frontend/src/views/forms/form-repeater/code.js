@@ -26,7 +26,7 @@ export const codeBasic = `
               <b-form-input
                 id="item-name"
                 type="text"
-                placeholder="Macas Admin Template"
+                placeholder="Dasboard Admin Template"
               />
             </b-form-group>
           </b-col>

@@ -66,9 +66,35 @@ const sale = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+const saleTeam = async (req, res) => {
+  try {
+    const sql = "SELECT * FROM view_sale_team_reports";
+    const [datas] = await sequelize.query(sql);
+
+    res.status(200).json({
+      message: "Retrieved successfully",
+      data: datas, // Kết quả của truy vấn
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 const saleMonth = async (req, res) => {
   try {
     const sql = "SELECT * FROM view_sale_month_reports";
+    const [datas] = await sequelize.query(sql);
+
+    res.status(200).json({
+      message: "Retrieved successfully",
+      data: datas, // Kết quả của truy vấn
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+const saleTeamMonth = async (req, res) => {
+  try {
+    const sql = "SELECT * FROM view_sale_team_month_reports";
     const [datas] = await sequelize.query(sql);
 
     res.status(200).json({
@@ -219,7 +245,9 @@ module.exports = {
   marketingTeamMonth,
 
   sale,
+  saleTeam,
   saleMonth,
+  saleTeamMonth,
 
   bonus,
   bonusMonth,
